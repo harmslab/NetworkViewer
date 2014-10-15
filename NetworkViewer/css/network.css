@@ -1,12 +1,15 @@
 .graph_node {
-  stroke: #555;
+  stroke: #fff;
+  opacity: 0;
+  fill: #fff;
 }
 
 .graph_link {
-  stroke: #999;
-  stroke-opacity: .6;
+  stroke: #000;
+  stroke-opacity: .3;
   fill:#000;
   opacity: 1;
+  stroke-width:3;
   
 }
 
