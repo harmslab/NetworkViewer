@@ -8,7 +8,10 @@ var Modal = function(id) {
     **/
     
     this.id = id;
+<<<<<<< HEAD
     this.items = [];
+=======
+>>>>>>> fixing modal
     
     // Build Modal header
     var close_button = $("<button></button>")
@@ -63,6 +66,7 @@ var Modal = function(id) {
                 .attr("role", "dialog")
                 .attr("aria-hidden", "true")
                 .append(this.dialog);
+<<<<<<< HEAD
                 
 };
 
@@ -114,6 +118,16 @@ Modal.prototype.add_element_to_grid = function(element){
             
     $(".row-"+String(row)).append(element);
     this.items.push(element);
+=======
+    
+    // Create toggle button for modal            
+    this.toggle_button = $("<button></button>")
+                .addClass("btn btn-primary btn-lg")
+                .attr("data-toggle", "modal")
+                .attr("data-target", "#"+this.id+"_window")
+                .attr("id", this.id+"_toggle");    
+                
+>>>>>>> fixing modal
 }
 
 
@@ -153,12 +167,17 @@ Modal.prototype.dropdown = function (id, title, options) {
                 .attr("id", options[i]+"")
                     .attr("role","menuitem")
                     .attr("tabindex", "-1")
+<<<<<<< HEAD
+=======
+                    //.attr("href", "#")
+>>>>>>> fixing modal
                 )
         );
     };
     
     var menu = $("<div></div>")
                 .addClass("dropdown")
+<<<<<<< HEAD
                 .addClass("container")
                 .attr("id", id+"_dropdown")
                 .append(button, option_list);
@@ -219,3 +238,11 @@ Modal.prototype.sub_panel = function(id, title) {
                 
     $("#"+this.id+"_body").append(panel);    
 };
+=======
+                .attr("id", id+"_dropdown")
+                .append(button, option_list);
+                
+    $("#"+id+"_body").append(menu);      
+};
+
+>>>>>>> fixing modal

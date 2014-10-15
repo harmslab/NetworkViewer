@@ -13,6 +13,7 @@ var Network = function (svg, system) {
     this.link_distance = 60
     this.color_on = false;
     this.node_text_on = true;
+
     this.system = system;
     
     // Create an svg canvas for D3 plot
@@ -58,6 +59,7 @@ Network.prototype.build_network = function() {
         .attr("id", function(d) {return "node-"+d.index})
         .attr("node-index", function(d) {return d.index})
         .attr("r", 13)
+
     
     graph_force.on("tick", function () {
         graph_node   
@@ -107,6 +109,7 @@ Network.prototype.add_node_names = function() {
     graph_force.on("tick", function () { 
         graph_node   
             .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+
         
         graph_link 
             .attr("x1", function(d) { return d.source.x; })

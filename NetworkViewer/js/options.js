@@ -1,4 +1,5 @@
 var Options = function (selector, network_viewer) {
+<<<<<<< HEAD
     // Network Options
 
     this.id = "network_options";
@@ -20,4 +21,15 @@ var Options = function (selector, network_viewer) {
     this.modal.toggle_button("test3", "Push me too!");
     this.modal.toggle_button("test4", "Push me too!");
     
+=======
+    // List of options
+    
+    this.network_viewer = network_viewer;
+    this.id = "#options";
+    
+    this.modal = new Modal("options");
+    
+    $(selector).append(this.modal.window);
+    $(selector).append(this.)
+>>>>>>> fixing modal
 };
