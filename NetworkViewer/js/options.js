@@ -1,11 +1,18 @@
 var Options = function (selector, network_viewer) {
-    // List of options
-    
+    // Network Options
+
+    this.id = "network_options";
     this.network_viewer = network_viewer;
-    this.id = "#options";
+    this.modal = new Modal(this.id);
+    this.modal.header.append($("<h4>").text("Network customization"));
     
-    this.modal = new Modal("options");
-    
+    // Attach the modal to the page
     $(selector).append(this.modal.window);
-    $(selector).append(this.)
+    
+    // Place the modal toggle button somewhere ...
+    $(selector).append(this.modal.create_modal_toggle("Customization"));
+    
+    // Populate a modal.
+    this.modal.toggle_button("test", "Push me!");
+    this.modal.toggle_button("test2", "Push me too!");
 };

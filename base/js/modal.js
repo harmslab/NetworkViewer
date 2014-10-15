@@ -8,6 +8,7 @@ var Modal = function(id) {
     **/
     
     this.id = id;
+    this.items = [];
     
     // Build Modal header
     var close_button = $("<button></button>")
@@ -62,14 +63,32 @@ var Modal = function(id) {
                 .attr("role", "dialog")
                 .attr("aria-hidden", "true")
                 .append(this.dialog);
-    
-    // Create toggle button for modal            
-    this.toggle_button = $("<button></button>")
+                
+};
+
+
+Modal.prototype.create_modal_toggle = function(text){
+    /**
+    * Initiates the modal window to appear
+    *
+    * Parameters:
+    * ----------
+    * text: str
+    *   text that will appear on window
+    **/
+    this.modal_toggle_button = $("<button></button>")
                 .addClass("btn btn-primary btn-lg")
                 .attr("data-toggle", "modal")
                 .attr("data-target", "#"+this.id+"_window")
-                .attr("id", this.id+"_toggle");    
+                .attr("id", this.id+"_toggle")
+                .text(text);
                 
+    return this.modal_toggle_button;
+};
+
+
+Modal.prototype.add_element_to_grid = function(id){
+    this.items.push(id);
 }
 
 
@@ -109,7 +128,6 @@ Modal.prototype.dropdown = function (id, title, options) {
                 .attr("id", options[i]+"")
                     .attr("role","menuitem")
                     .attr("tabindex", "-1")
-                    //.attr("href", "#")
                 )
         );
     };
@@ -119,6 +137,25 @@ Modal.prototype.dropdown = function (id, title, options) {
                 .attr("id", id+"_dropdown")
                 .append(button, option_list);
                 
-    $("#"+id+"_body").append(menu);      
+    $("#"+this.id+"_body").append(menu);      
 };
 
+Modal.prototype.toggle_button = function(id, text) {
+    /**
+    * Adds a toggle button to the modal, can be used as a switch
+    *
+    * Parameters:
+    * ----------
+    * id: str
+    *   html element `id` for the dropdown
+    * title: str
+    *   text to display on toggle button
+    **/
+    var button = $("<button></button>")
+                .addClass("btn btn-primary")
+                .attr("id", id)
+                .attr("data-toggle", "button")
+                .text(text);
+                
+    $("#"+this.id+"_body").append(button);       
+};
