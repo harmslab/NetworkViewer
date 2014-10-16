@@ -77,7 +77,6 @@ Network.prototype.build_network = function() {
     this.graph_link = graph_link;
     this.graph_node = graph_node;
     this.system = system;
-    this.add_node_names();
     
 };
 
@@ -122,4 +121,5 @@ Network.prototype.add_node_names = function() {
     this.graph_force = graph_force;
     this.graph_node = graph_node;
     this.graph_link = graph_link;
-}
+
+};
