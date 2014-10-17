@@ -87,8 +87,27 @@ Modal.prototype.create_modal_toggle = function(text){
 };
 
 
-Modal.prototype.add_element_to_grid = function(id){
-    this.items.push(id);
+Modal.prototype.add_element_to_grid = function(element){
+    /**
+    * Adds a dropdown menu to the modal
+    *
+    * Parameters:
+    * ----------
+    * id: str
+    *   html element `id` for the dropdown
+    * title: str
+    *   text to display on dropdown button
+    * option: array of strings
+    *   text for each option in the dropdwon
+    **/
+    row = parseInt((this.items.length)/3);
+    col = (this.items.length)%3;
+    if (col == 0) {
+        var new_row = $("<div></div>").addClass("row row-" + String(row));
+        $("#"+this.id+"_body").append(new_row);
+    };
+    $(".row-"+String(row)).append(element.addClass("col-md-4"));
+    this.items.push(element);
 }
 
 
@@ -136,8 +155,9 @@ Modal.prototype.dropdown = function (id, title, options) {
                 .addClass("dropdown")
                 .attr("id", id+"_dropdown")
                 .append(button, option_list);
-                
-    $("#"+this.id+"_body").append(menu);      
+           
+    this.add_element_to_grid(menu);
+    //$("#"+this.id+"_body").append(menu);      
 };
 
 Modal.prototype.toggle_button = function(id, text) {
@@ -157,5 +177,6 @@ Modal.prototype.toggle_button = function(id, text) {
                 .attr("data-toggle", "button")
                 .text(text);
                 
-    $("#"+this.id+"_body").append(button);       
+    this.add_element_to_grid(button);  
+    //$("#"+this.id+"_body").append(button);       
 };
