@@ -106,7 +106,8 @@ Modal.prototype.add_element_to_grid = function(element){
         var new_row = $("<div></div>").addClass("row row-" + String(row));
         $("#"+this.id+"_body").append(new_row);
     };
-    $(".row-"+String(row)).append(element.addClass("col-md-4"));
+    element.addClass("col-md-4")
+    $(".row-"+String(row)).append(element);
     this.items.push(element);
 }
 
