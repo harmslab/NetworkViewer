@@ -26,7 +26,7 @@ var Network = function (svg, system) {
     if (this.color_on == true) {
         this.color_network();
     };
-        
+
 };
 
 

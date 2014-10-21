@@ -103,10 +103,15 @@ Modal.prototype.add_element_to_grid = function(element){
     row = parseInt((this.items.length)/3);
     col = (this.items.length)%3;
     if (col == 0) {
-        var new_row = $("<div></div>").addClass("row row-" + String(row));
+        var new_row = $("<div></div>")
+                    .addClass("row row-" + String(row))
+                    .addClass("container-fluid")
+                    .css("padding-bottom", "10px");
         $("#"+this.id+"_body").append(new_row);
     };
-    element.addClass("col-md-4")
+    
+    element.addClass("col-md-4");
+            
     $(".row-"+String(row)).append(element);
     this.items.push(element);
 }
@@ -154,11 +159,11 @@ Modal.prototype.dropdown = function (id, title, options) {
     
     var menu = $("<div></div>")
                 .addClass("dropdown")
+                .addClass("container")
                 .attr("id", id+"_dropdown")
                 .append(button, option_list);
            
     this.add_element_to_grid(menu);
-    //$("#"+this.id+"_body").append(menu);      
 };
 
 Modal.prototype.toggle_button = function(id, text) {
@@ -176,8 +181,41 @@ Modal.prototype.toggle_button = function(id, text) {
                 .addClass("btn btn-primary")
                 .attr("id", id)
                 .attr("data-toggle", "button")
+                .attr("type", "button")
                 .text(text);
+    
+    var button_container = $("<div></div>")
+                .addClass("container")
+                .append(button);
                 
-    this.add_element_to_grid(button);  
-    //$("#"+this.id+"_body").append(button);       
+    this.add_element_to_grid(button_container);  
+};
+
+Modal.prototype.sub_panel = function(id, title) {
+    /**
+    * Adds a subpanel to the modal
+    *
+    * Parameters:
+    * ----------
+    * id: str
+    *   html element `id` for the subpanel
+    * title: str
+    *   text to display on header of the subpanel
+    **/
+                
+    var panel_header = $("<div></div>")
+                .addClass("panel-heading")
+                .attr("id", id+"-header")
+                .text(title);
+                
+    var panel_body = $("<div></div>")
+                .addClass("panel-body")
+                .attr("id", id+"-body");
+                
+    var panel = $("<div></div>")
+                .addClass("panel panel-primary")
+                .attr("id", id)
+                .append(panel_header, panel_body);
+                
+    $("#"+this.id+"_body").append(panel);    
 };

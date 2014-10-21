@@ -14,7 +14,10 @@ var Options = function (selector, network_viewer) {
     
     // Populate a modal.
     this.modal.toggle_button("test", "Push me!");
+    this.modal.sub_panel("test2", "Sub Panel")
+    
     this.modal.toggle_button("test2", "Push me too!");
     this.modal.toggle_button("test3", "Push me too!");
     this.modal.toggle_button("test4", "Push me too!");
+    
 };
