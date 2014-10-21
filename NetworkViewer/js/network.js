@@ -10,8 +10,8 @@ var Network = function (svg, system) {
     this.width = this.svg.attr("width");
     this.height = this.svg.attr("height"); 
     this.charge = -100;
-    this.link_distance = 100
-    this.color_on = true;
+    this.link_distance = 60
+    this.color_on = false;
     this.system = system;
     
     // Create an svg canvas for D3 plot
@@ -26,7 +26,7 @@ var Network = function (svg, system) {
     if (this.color_on == true) {
         this.color_network();
     };
-        
+
 };
 
 
@@ -45,21 +45,18 @@ Network.prototype.build_network = function() {
         .data(system.links)
         .enter().append("line")
         .attr("class", "graph_link");
-   
         
     var graph_node = this.svg.selectAll(".graph_node")
         .data(system.nodes)
         .enter().append("circle")
         .attr("class", "graph_node")
         .attr("id", function(d) {return d.index})
-        .attr("r", 10)
+        .attr("r", 13)
         .attr("cx", function(d) {return d.x;})
         .attr("cy", function(d) {return d.y;})
-        .call(graph_force.drag);    
-    
+        .call(graph_force.drag); 
     
     graph_force.on("tick", function () {
-        
         graph_node   
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
@@ -69,13 +66,14 @@ Network.prototype.build_network = function() {
             .attr("y1", function(d) { return d.source.y; })
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
-        
     });
+    
     
     this.graph_force = graph_force;
     this.graph_link = graph_link;
     this.graph_node = graph_node;
     this.system = system;
+    
 };
 
 
