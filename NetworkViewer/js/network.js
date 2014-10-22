@@ -12,6 +12,7 @@ var Network = function (svg, system) {
     this.charge = -100;
     this.link_distance = 60
     this.color_on = false;
+    this.node_text_on = true;
     this.system = system;
     
     // Create an svg canvas for D3 plot
