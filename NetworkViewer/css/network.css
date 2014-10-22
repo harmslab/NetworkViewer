@@ -1,7 +1,13 @@
 .graph_node {
+<<<<<<< HEAD
   stroke: #fff;
   opacity: 0;
   fill: #fff;
+=======
+  stroke: #999;
+  fill:#000;
+  opacity:.3;
+>>>>>>> Non-string names coverted to string
 }
 
 .graph_link {
