@@ -94,6 +94,7 @@ Network.prototype.add_node_names = function() {
     var graph_node = this.graph_node;
     var graph_link = this.graph_link;
     
+    // Center the name over the node.
     function x_pos(name){
         var l = name.length;
         var pos = -l/2;
@@ -103,7 +104,7 @@ Network.prototype.add_node_names = function() {
     var graph_text = this.svg.selectAll("text")
         .data(system.nodes)
         .enter().append("text")
-        .attr("dx", function(d){return d.x + x_pos(d.name);})
+        .attr("dx", function(d){return d.x + x_pos(d.name.toString());})
         .attr("dy", function(d) {return d.y + 5;})
         .text(function(d) { 
             return d.name;
@@ -112,7 +113,7 @@ Network.prototype.add_node_names = function() {
     
     graph_force.on("tick", function () {    
         graph_text
-            .attr("dx", function(d){return d.x + x_pos(d.name);})
+            .attr("dx", function(d){return d.x + x_pos(d.name.toString());})
             .attr("dy", function(d) {return d.y + 5;})
             
         graph_node   
