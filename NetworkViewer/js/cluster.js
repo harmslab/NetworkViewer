@@ -158,17 +158,16 @@ Clustering.prototype.cluster_network = function(){
         .transition()
         .delay(this.transition_time)
         .duration(this.transition_time)
-        .attr("cx", function(d){
-            // Move node towards a random spot around cluster center
+        .attr("transform", function(d) { 
             var member = membership[d.index];
-            return cluster_foci[member].x + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
+            
+            var x = cluster_foci[member].x + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
+            var y = cluster_foci[member].y + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
+
+            return "translate(" + x + "," + y + ")"; 
+        
         })
-        .attr("cy", function(d){
-            // Move node towards a random spot around cluster center
-            var member = membership[d.index];
-            return cluster_foci[member].y + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
-        });
-    
+        
     cluster_link
         .transition()
         .delay(this.transition_time)
@@ -187,8 +186,7 @@ Clustering.prototype.cluster_network = function(){
         });
 
         graph_node
-          .attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; });
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
     };
 
     function attach_nodes() {
