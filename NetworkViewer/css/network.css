@@ -1,22 +1,21 @@
-.graph_node {
-<<<<<<< HEAD
-  stroke: #fff;
-  opacity: 0;
-  fill: #fff;
-=======
-  stroke: #999;
+
+
+.node_circle {
+  stroke: #000;
   fill:#000;
-  opacity:.3;
->>>>>>> Non-string names coverted to string
+  opacity:1;
 }
 
 .graph_link {
-  stroke: #000;
-  stroke-opacity: .3;
+  stroke: #999;
+  stroke-opacity:.6;
   fill:#000;
   opacity: 1;
-  stroke-width:3;
-  
+}
+
+.node_text {
+    color:#fff;
+    opacity:1;
 }
 
 path {
@@ -36,5 +35,4 @@ path {
   stroke-opacity: 1;
   fill:#000000;
   opacity: .4;
-  
 }

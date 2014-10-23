@@ -49,18 +49,18 @@ Network.prototype.build_network = function() {
         
     var graph_node = this.svg.selectAll(".graph_node")
         .data(system.nodes)
-        .enter().append("circle")
+        .enter().append("g")
         .attr("class", "graph_node")
+        .call(graph_force.drag); 
+        
+    graph_node.append("circle")
+        .attr("class", "node_circle")
         .attr("id", function(d) {return d.index})
         .attr("r", 13)
-        .attr("cx", function(d) {return d.x;})
-        .attr("cy", function(d) {return d.y;})
-        .call(graph_force.drag); 
     
     graph_force.on("tick", function () {
         graph_node   
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
             
         graph_link 
             .attr("x1", function(d) { return d.source.x; })
@@ -102,24 +102,17 @@ Network.prototype.add_node_names = function() {
         return 8*pos;
     }
     
-    var graph_text = this.svg.selectAll("text")
-        .data(system.nodes)
-        .enter().append("text")
-        .attr("dx", function(d){return d.x + x_pos(d.name.toString());})
-        .attr("dy", function(d) {return d.y + 5;})
+    graph_node.append("text")
+        .attr("class", "node_text")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
         .text(function(d) { 
             return d.name;
-        })
-        .call(graph_force.drag);   
-    
-    graph_force.on("tick", function () {    
-        graph_text
-            .attr("dx", function(d){return d.x + x_pos(d.name.toString());})
-            .attr("dy", function(d) {return d.y + 5;})
-            
+        });
+        
+    graph_force.on("tick", function () { 
         graph_node   
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
         
         graph_link 
             .attr("x1", function(d) { return d.source.x; })
@@ -128,7 +121,7 @@ Network.prototype.add_node_names = function() {
             .attr("y2", function(d) { return d.target.y; });
     });
         
-    this.graph_text = graph_text;
+    //this.graph_text = graph_text;
     this.graph_force = graph_force;
     this.graph_node = graph_node;
     this.graph_link = graph_link;
