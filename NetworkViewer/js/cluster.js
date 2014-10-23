@@ -11,8 +11,8 @@ var Clustering = function(svg, membership, network, clusters) {
     this.cluster_scale = 300;
     this.membership = membership;
     this.transition_time = 2000;
-    this.highlight = true;
-
+    
+    // Start the cluster force
     this.cluster_force = d3.layout.force()
         .charge(-60)
         .linkDistance(400)
@@ -32,19 +32,25 @@ var Clustering = function(svg, membership, network, clusters) {
         .links(clusters.links).start();
     
     
-        //Highlight cluster in network if mouse hovers node.
-    if (this.highlight == true) {
-        var that = this;
-        that.un_highlight_cluster();
-        $(".graph_node").mouseover(function(d){
-            var node = $(this).attr("id");
-            var cluster_number = that.membership[node]
-            that.highlight_cluster(cluster_number);
-        });
-        $(".graph_node").mouseout(function(d){
+    //Highlight cluster in network if mouse hovers node.
+    this.highlight = function(bool){
+        if (bool == true) {
+            var that = this;
             that.un_highlight_cluster();
-        });
+            $(".graph_circle").mouseover(function(d){
+                var node = $(this).attr("node-index");
+                var cluster_number = that.membership[node]
+                that.highlight_cluster(cluster_number);
+            });
+            $(".graph_circle").mouseout(function(d){
+                that.un_highlight_cluster();
+            });
+        } else {
+            $(".graph_circle").unbind();
+        };
     };
+    
+    this.highlight(true);
     
 };
 
@@ -52,6 +58,7 @@ var Clustering = function(svg, membership, network, clusters) {
 
 Clustering.prototype.build_clusters = function() {
     
+    this.highlight(false);
     var clusters = this.clusters;
     var cluster_force = this.cluster_force;
     var cluster_foci = this.cluster_foci;
@@ -116,6 +123,7 @@ Clustering.prototype.build_clusters = function() {
 
 Clustering.prototype.cluster_network = function(){
     // Builds a D3 network from graph data (in JSON form)   
+    this.highlight(false);
     
     this.build_clusters();
     this.cluster_force.stop();
@@ -134,7 +142,7 @@ Clustering.prototype.cluster_network = function(){
     var cluster_foci = this.cluster_foci;
     var membership = this.membership;
     
-    this.highlight_clusters();
+    this.color_clusters();
     
     this.cluster_link
         .style("opacity", 0)
@@ -151,17 +159,16 @@ Clustering.prototype.cluster_network = function(){
         .transition()
         .delay(this.transition_time)
         .duration(this.transition_time)
-        .attr("cx", function(d){
-            // Move node towards a random spot around cluster center
+        .attr("transform", function(d) { 
             var member = membership[d.index];
-            return cluster_foci[member].x + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
+            
+            var x = cluster_foci[member].x + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
+            var y = cluster_foci[member].y + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
+
+            return "translate(" + x + "," + y + ")"; 
+        
         })
-        .attr("cy", function(d){
-            // Move node towards a random spot around cluster center
-            var member = membership[d.index];
-            return cluster_foci[member].y + Math.pow(-1,parseInt(10*Math.random())) * Math.random() * 50;
-        });
-    
+        
     cluster_link
         .transition()
         .delay(this.transition_time)
@@ -180,8 +187,7 @@ Clustering.prototype.cluster_network = function(){
         });
 
         graph_node
-          .attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; });
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
     };
 
     function attach_nodes() {
@@ -216,14 +222,14 @@ Clustering.prototype.cluster_network = function(){
     // Wait for clusters to form before releasing
     setTimeout(attach_nodes,this.transition_time*2);
     
-    this.graph_node = graph_node;
-    this.graph_link = graph_link;
+    this.network.graph_node = graph_node;
+    this.network.graph_link = graph_link;
     
     this.cluster_link = cluster_link;
     this.cluster_node = cluster_node;
     this.cluster_foci = cluster_foci;
     
-    this.graph_force = graph_force;
+    this.network.graph_force = graph_force;
     this.cluster_force = cluster_force;
     
 };
@@ -237,6 +243,7 @@ Clustering.prototype.highlight_cluster = function(cluster_number){
     
     var graph_node = this.network.graph_node;
     var graph_link = this.network.graph_link;
+    var graph_circle = this.network.graph_circle;
     
     
     graph_link
@@ -268,8 +275,7 @@ Clustering.prototype.highlight_cluster = function(cluster_number){
             }
         })
     
-    
-    graph_node
+    graph_circle
         .style("fill", function(d) {
             var member = membership[d.name];
             if (member == cluster_number) {
@@ -290,6 +296,7 @@ Clustering.prototype.highlight_cluster = function(cluster_number){
 
     this.network.graph_link = graph_link;
     this.network.graph_node = graph_node;
+    this.network.graph_circle = graph_circle;
 };
 
 
@@ -301,6 +308,7 @@ Clustering.prototype.un_highlight_cluster = function(cluster_number){
     
     var graph_node = this.network.graph_node;
     var graph_link = this.network.graph_link;
+    var graph_circle = this.network.graph_circle;
     
     
     graph_link
@@ -308,17 +316,18 @@ Clustering.prototype.un_highlight_cluster = function(cluster_number){
         .style("opacity", .4)
         .style("stroke-width", 2);
     
-    graph_node
+    graph_circle
         .style("fill", "#000")
         .style("opacity", .4);
 
     this.network.graph_link = graph_link;
     this.network.graph_node = graph_node;
+    this.network.graph_circle = graph_circle;
 };
 
 
 
-Clustering.prototype.highlight_clusters = function(){
+Clustering.prototype.color_clusters = function(){
     
     var network = this.network;
     var system = this.system;
@@ -326,13 +335,14 @@ Clustering.prototype.highlight_clusters = function(){
     
     var graph_node = this.network.graph_node;
     var graph_link = this.network.graph_link;
+    var graph_circle = this.network.graph_circle;
     
     var colors = ["#ff0000", '#00ff00', '#0000ff', '#ffff00', '#ff6600', '#6600cc']
     
     graph_link
         .style("stroke-width", 1);
         
-    graph_node
+    graph_circle
         .transition()
         .duration(this.transition_time)
         .style("fill", function(d) {
@@ -342,6 +352,6 @@ Clustering.prototype.highlight_clusters = function(){
 
     this.network.graph_link = graph_link;
     this.network.graph_node = graph_node;
-
+    this.network.graph_circle = graph_circle;
 
 };
