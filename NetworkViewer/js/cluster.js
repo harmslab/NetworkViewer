@@ -277,7 +277,7 @@ Clustering.prototype.highlight_cluster = function(cluster_number){
     
     graph_circle
         .style("fill", function(d) {
-            var member = membership[d.name];
+            var member = membership[d.index];
             if (member == cluster_number) {
                 return "#ff0000";
             } else {
@@ -285,7 +285,7 @@ Clustering.prototype.highlight_cluster = function(cluster_number){
             }
         })
         .style("opacity", function(d) {
-            var member = membership[d.name];
+            var member = membership[d.index];
             if (member == cluster_number) {
                 return 1;
             } else {
@@ -346,7 +346,7 @@ Clustering.prototype.color_clusters = function(){
         .transition()
         .duration(this.transition_time)
         .style("fill", function(d) {
-            var member = membership[d.name];
+            var member = membership[d.index];
             return colors[member];
         })
 

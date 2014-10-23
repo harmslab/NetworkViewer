@@ -36,6 +36,7 @@ var main = function () {
         that.network_viewer.build_network();
     });
     */
+    
 };
 
 $(document).ready(main);
