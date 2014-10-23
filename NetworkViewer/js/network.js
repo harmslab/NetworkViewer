@@ -53,9 +53,10 @@ Network.prototype.build_network = function() {
         .attr("class", "graph_node")
         .call(graph_force.drag); 
         
-    graph_node.append("circle")
-        .attr("class", "node_circle")
-        .attr("id", function(d) {return d.index})
+    var graph_circle = graph_node.append("circle")
+        .attr("class", "graph_circle")
+        .attr("id", function(d) {return "node-"+d.index})
+        .attr("node-index", function(d) {return d.index})
         .attr("r", 13)
     
     graph_force.on("tick", function () {
@@ -69,7 +70,7 @@ Network.prototype.build_network = function() {
             .attr("y2", function(d) { return d.target.y; });
     });
     
-    
+    this.graph_circle = graph_circle;
     this.graph_force = graph_force;
     this.graph_link = graph_link;
     this.graph_node = graph_node;
@@ -95,15 +96,8 @@ Network.prototype.add_node_names = function() {
     var graph_node = this.graph_node;
     var graph_link = this.graph_link;
     
-    // Center the name over the node.
-    function x_pos(name){
-        var l = name.length;
-        var pos = -l/2;
-        return 8*pos;
-    }
-    
-    graph_node.append("text")
-        .attr("class", "node_text")
+    var graph_text = graph_node.append("text")
+        .attr("class", "graph_text")
         .attr("dx", 12)
         .attr("dy", ".35em")
         .text(function(d) { 
@@ -121,7 +115,7 @@ Network.prototype.add_node_names = function() {
             .attr("y2", function(d) { return d.target.y; });
     });
         
-    //this.graph_text = graph_text;
+    this.graph_text = graph_text;
     this.graph_force = graph_force;
     this.graph_node = graph_node;
     this.graph_link = graph_link;
