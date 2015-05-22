@@ -1,28 +1,29 @@
 <!DOCTYPE HTML>
 <html>
-
-<head>
+    <head>
     
-    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/network.css">
-    <script data-main="js/main" src="lib/require/require.js"></script>
-</head>
-
-<body>
+        <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/network.css">
+        <script data-main="js/main" src="lib/require/require.js"></script>
+    </head>
+    <body>
     
-    <div class="container" id="main_page">
+        <div class="container" id="main_page">
         
-        <!-- Page header for the webpage -->
-        <div class="page-header"><h1>NetworkViewer <small>Interactive Network Visualization</small></h1></div>
-    
+            <!-- Page header for the webpage -->
+            <div class="page-header"><h1>NetworkViewer <small>Interactive Network Visualization</small></h1></div>
         
-        <!-- The choice of application is displayed here. -->
-        <div class="container" id="app_container">
-
+        
+            <!-- The choice of application is displayed here. -->
+            <div class="container" id="app_container">
+            
+                <!-- Main svg area -->
+                <div id="network_viewer">
+                    <!-- Buttons for clustering and unclustering -->
+                    <button class="btn btn-primary" id="cluster">Cluster</button>
+                    <button class="btn btn-danger" id="cluster">Un-Cluster</button>
+                </div>
+            </div>
         </div>
-    
-    </div>
-
-</body>
-
+    </body>
 </html>

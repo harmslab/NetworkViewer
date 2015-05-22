@@ -18,19 +18,13 @@ requirejs([
     'd3',
     'js/network',
     'js/cluster',
-],function($, d3, Network, Cluster) {
+], function($, d3, Network, Cluster) {
         
     // Main logic for populating the network
-        
-    $('#app_container').append($('<div>').attr('id', 'network_viewer'));
-    
-    this.selector = '#network_viewer';
-    this.width = parseInt($(this.selector).css("width"));
+    this.width = parseInt($('#network_viewer').css("width"));
     this.height = 700;
-    this.clustering_button = $(this.selector).append($("<button>").addClass("btn btn-primary").attr("id", "cluster").text("Cluster"));
-    this.unclustering_button = $(this.selector).append($("<button>").addClass("btn btn-danger").attr("id", "uncluster").text("Un-cluster"));
-    
-    this.svg = d3.select(this.selector).append("svg")
+
+    this.svg = d3.select("#network_viewer").append("svg")
         .attr("width", this.width)
         .attr("height", this.height)
     
