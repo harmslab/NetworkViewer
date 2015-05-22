@@ -1,5 +1,27 @@
-var main = function () {
-    //
+// Config the application paths for other scripts loading modules
+
+requirejs.config({
+    baseUrl: '',
+    paths: {
+        backbone: 'lib/backbone/backbone-min',
+        bootstrap: 'lib/bootstrap/js/bootstrap.min',
+        d3: 'lib/d3/d3.min',
+        jquery: 'lib/jquery/jquery.min',
+        jqueryui: 'lib/jquery-ui/jquery-ui.min',
+        underscore: 'lib/underscore/underscore-min'
+    }
+})
+
+// Main application single entry point
+requirejs([ 
+    'jquery', 
+    'd3',
+    'js/network',
+    'js/cluster',
+],function($, d3, Network, Cluster) {
+        
+    // Main logic for populating the network
+        
     $('#app_container').append($('<div>').attr('id', 'network_viewer'));
     
     this.selector = '#network_viewer';
@@ -18,16 +40,16 @@ var main = function () {
     var network_viewer = this.network_viewer;
     
     // Clustering
-    this.cluster = {'nodes': [{'name': 0, 'value': 0.20149942200342025}, {'name': 1, 'value': 0.19023982949239088}, {'name': 2, 'value': 0.1768371625151556}, {'name': 3, 'value': 0.20376442779907508}, {'name': 4, 'value': 0.23718796584046783}, {'name': 5, 'value': 0.2242067868472839}], 'links': [{'source': 0, 'tsize': 0.15398760931562055, 'target': 1, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.11711063081598984, 'target': 2, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.15618259204871807, 'target': 3, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.20099742933373557, 'target': 4, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.17022231648251585, 'target': 5, 'ssize': 0.20149942200342025}, {'source': 1, 'tsize': 0.098022908714533855, 'target': 2, 'ssize': 0.19023982949239088}, {'source': 1, 'tsize': 0.15653095935810041, 'target': 3, 'ssize': 0.19023982949239088}, {'source': 1, 'tsize': 0.1923138450890346, 'target': 4, 'ssize': 0.19023982949239088}, {'source': 1, 'tsize': 0.17421456189868173, 'target': 5, 'ssize': 0.19023982949239088}, {'source': 2, 'tsize': 0.18015501019373717, 'target': 3, 'ssize': 0.1768371625151556}, {'source': 2, 'tsize': 0.20780138121988562, 'target': 4, 'ssize': 0.1768371625151556}, {'source': 2, 'tsize': 0.20187333563618101, 'target': 5, 'ssize': 0.1768371625151556}, {'source': 3, 'tsize': 0.2052998825956221, 'target': 4, 'ssize': 0.20376442779907508}, {'source': 3, 'tsize': 0.18986556525279677, 'target': 5, 'ssize': 0.20376442779907508}, {'source': 4, 'tsize': 0.19286434533822891, 'target': 5, 'ssize': 0.23718796584046783}]};
+    this.clusters = {'nodes': [{'name': 0, 'value': 0.20149942200342025}, {'name': 1, 'value': 0.19023982949239088}, {'name': 2, 'value': 0.1768371625151556}, {'name': 3, 'value': 0.20376442779907508}, {'name': 4, 'value': 0.23718796584046783}, {'name': 5, 'value': 0.2242067868472839}], 'links': [{'source': 0, 'tsize': 0.15398760931562055, 'target': 1, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.11711063081598984, 'target': 2, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.15618259204871807, 'target': 3, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.20099742933373557, 'target': 4, 'ssize': 0.20149942200342025}, {'source': 0, 'tsize': 0.17022231648251585, 'target': 5, 'ssize': 0.20149942200342025}, {'source': 1, 'tsize': 0.098022908714533855, 'target': 2, 'ssize': 0.19023982949239088}, {'source': 1, 'tsize': 0.15653095935810041, 'target': 3, 'ssize': 0.19023982949239088}, {'source': 1, 'tsize': 0.1923138450890346, 'target': 4, 'ssize': 0.19023982949239088}, {'source': 1, 'tsize': 0.17421456189868173, 'target': 5, 'ssize': 0.19023982949239088}, {'source': 2, 'tsize': 0.18015501019373717, 'target': 3, 'ssize': 0.1768371625151556}, {'source': 2, 'tsize': 0.20780138121988562, 'target': 4, 'ssize': 0.1768371625151556}, {'source': 2, 'tsize': 0.20187333563618101, 'target': 5, 'ssize': 0.1768371625151556}, {'source': 3, 'tsize': 0.2052998825956221, 'target': 4, 'ssize': 0.20376442779907508}, {'source': 3, 'tsize': 0.18986556525279677, 'target': 5, 'ssize': 0.20376442779907508}, {'source': 4, 'tsize': 0.19286434533822891, 'target': 5, 'ssize': 0.23718796584046783}]};
     this.membership = {0: 0, 1: 0, 2: 4, 3: 3, 4: 4, 5: 5, 6: 5, 7: 4, 8: 2, 9: 4, 10: 3, 11: 0, 12: 0, 13: 1, 14: 3, 15: 4, 16: 5, 17: 5, 18: 4, 19: 4, 20: 4, 21: 4, 22: 4, 23: 2, 24: 1, 25: 5, 26: 5, 27: 5, 28: 5, 29: 5, 30: 1, 31: 0, 32: 0, 33: 3, 34: 1, 35: 4, 36: 4, 37: 4, 38: 4, 39: 2, 40: 5, 41: 5, 42: 3, 43: 4, 44: 5, 45: 5, 46: 5, 47: 5, 48: 0, 49: 0, 50: 0, 51: 5, 52: 1, 53: 0, 54: 2, 55: 4, 56: 4, 57: 4, 58: 4, 59: 0, 60: 0, 61: 0, 62: 4, 63: 1, 64: 0, 65: 0, 66: 0, 67: 1, 68: 4, 69: 3, 70: 4, 71: 3, 72: 4, 73: 4, 74: 3, 75: 0, 76: 0, 77: 0, 78: 5, 79: 5, 80: 1, 81: 5, 82: 0, 83: 0, 84: 2, 85: 2, 86: 0, 87: 3, 88: 5, 89: 5, 90: 1, 91: 5, 92: 4, 93: 4, 94: 4, 95: 3, 96: 5, 97: 5, 98: 5, 99: 1, 100: 1, 101: 0, 102: 1, 103: 4, 104: 2, 105: 0, 106: 5, 107: 2, 108: 3, 109: 4, 110: 5, 111: 1, 112: 2, 113: 5, 114: 4, 115: 3, 116: 0, 117: 1, 118: 4, 119: 4, 120: 5, 121: 5, 122: 3, 123: 0, 124: 0, 125: 0, 126: 4, 127: 4};
     
-    this.clustering = new Clustering(this.svg, this.membership, this.network_viewer, this.cluster);
-    var clustering = this.clustering;
+    this.cluster = new Cluster(this.svg, this.membership, this.network_viewer, this.clusters);
+    var cluster = this.cluster;
     
     
     $("#cluster").click(this, function(event){
         var that = event.data;
-        that.clustering.cluster_network();
+        that.cluster.cluster_network();
     });
     
     $("#uncluster").click(this, function(event){
@@ -35,7 +57,5 @@ var main = function () {
         $("svg").empty();
         that.network_viewer.build_network();
     });
-
-};
-
-$(document).ready(main);
+    
+});
