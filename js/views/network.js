@@ -18,6 +18,9 @@ define([
         //element: "#network_viewer",
 
         initialize: function(){
+            /*
+                Initialize network view
+            */
             this.element = "#network_viewer";
             
             // Parameters for building network
@@ -35,6 +38,7 @@ define([
                 .linkDistance(this.model.get("link_distance"))
                 .size([this.width-10, this.height-10])
             
+            // Start force simulation.
             this.start_force();
             this.draw_links();
             this.draw_nodes();
@@ -45,6 +49,9 @@ define([
         },
 
         start_force: function(){
+            /*
+                Starts D3's force network simulation
+            */
             this.force
                 .nodes(this.model.get("nodes"))
                 .links(this.model.get("links"))
@@ -52,6 +59,9 @@ define([
         },
 
         draw_nodes: function() {
+            /*
+                Add node data to D3 force simulation.
+            */
             this.nodes = this.svg.selectAll(".graph_node")
                 .data(this.model.get("nodes"))
                 .enter().append("g")
@@ -60,6 +70,9 @@ define([
         },
 
         draw_links: function() {
+            /*
+                Add link data to D3 force simulation.
+            */
             this.links = this.svg.selectAll(".graph_link")
                 .data(this.model.get("links"))
                 .enter().append("line")
@@ -67,6 +80,14 @@ define([
         },
 
         node_shape: function(shape) {
+            /*
+                Add shapes to each node in D3 force simulation.
+            
+                Parameter:
+                ---------
+                shape: string
+                    SVG shape for each node.
+            */
             this.circles = this.nodes.append("circle")
                 .attr("class", "graph_circle")
                 .attr("id", function(d) {return "node-"+d.index})
@@ -75,7 +96,9 @@ define([
         },
 
         force_on: function() {
-            // get 
+            /*
+                How to handle each tick in a force simulation.
+            */
             var that = this;
 
             this.force.on("tick", function () {
@@ -95,6 +118,9 @@ define([
         },
 
         node_text: function(){
+            /*
+                Add text to each node based on each node's "id".
+            */
             this.labels = this.nodes.append("text")
                 .attr("class", "graph_text")
                 .attr("dx", 12)
@@ -105,7 +131,9 @@ define([
         },
 
         node_color: function() {
-            // Builds a D3 network from graph data (in JSON form).
+            /*
+                Add color to each node based on the node's "value".
+            */
             var colors = d3.interpolate('orange', 'purple');
             this.nodes
                 .attr("fill", function(d){ return colors(d.value)});

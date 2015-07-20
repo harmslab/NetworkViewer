@@ -1,5 +1,7 @@
 /*
-General network graph of nodes and edges.
+
+Backbone view modal for the network.
+
 */
 
 define([
@@ -17,18 +19,27 @@ define([
         el: "#cool",
         
         initialize: function() {
+            /*
+                Initialize a modal for the network.
+            */
             this.render();
         },
         
+        // Load modal template.
         template: _.template(modalTemplate),
         
         render: function() {
+            /*
+                Render the modal template.
+            */
             this.$el.html(this.template());
             return this;
         },
    
         show: function(){
-            console.log($("#myModal"))
+            /*
+                Show the modal.
+            */
             $("#myModal").modal({show:true})
         }
     });
