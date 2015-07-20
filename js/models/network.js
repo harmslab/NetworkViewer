@@ -16,7 +16,7 @@ define([
 
         // Initial attributes
         defaults:{
-            "width": 700,
+            "width": 1100,
             "height": 700,
             "charge": -100,
             "link_distance": 100,
