@@ -17,20 +17,24 @@
 }
 
 path {
-  stroke: #999;
-  stroke-width: 1;
+    stroke: #999;
+    stroke-width: 1;
 }
 
 .cluster_node {
-  stroke: #000;
-  stroke-width:0;
-  fill: #fff;
-  fill-opacity: 1;
+    stroke: #000;
+    stroke-width:0;
+    fill: #fff;
+    fill-opacity: 1;
 }
 
 .cluster_link {
-  stroke: #999;
-  stroke-opacity: 1;
-  fill:#000000;
-  opacity: .4;
+    stroke: #999;
+    stroke-opacity: 1;
+    fill:#000000;
+    opacity: .4;
+}
+
+.page-header {
+    margin: 0px 0px 0px 0px;
 }
