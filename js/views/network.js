@@ -99,7 +99,7 @@ define([
                 .attr("class", "graph_text")
                 .attr("dx", 12)
                 .attr("dy", ".35em")
-                .text(function(d) { return d.name; });
+                .text(function(d) { return d.id; });
 
             this.force_on();
         },
@@ -108,7 +108,7 @@ define([
             // Builds a D3 network from graph data (in JSON form).
             var colors = d3.interpolate('orange', 'purple');
             this.nodes
-                .attr("fill", function(d){ return colors(d.value*70)});
+                .attr("fill", function(d){ return colors(d.value)});
         },
 
     });
