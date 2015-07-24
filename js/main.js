@@ -28,8 +28,9 @@ requirejs([
     'js/views/modal'
 ], function($, d3, NetworkModel, NetworkView, NetworkModal) {
 
-    var data = [data1, data2]
+    //var datasets = [data1, data2]
 
+    //var datasets = new Object( data1, data2 );
     // Data plotted in network
     var data1 = { "ref": "000",
                   "links": [
@@ -277,9 +278,9 @@ requirejs([
                 }
 
 
-
+    var data = [data1,data2];
     // Initializing backbone model for network app.
-    this.network_model = new NetworkModel(data1);
+    this.network_model = new NetworkModel( data );
 
     // Initializing all backbone views.
     this.network_modal = new NetworkModal();
