@@ -94,7 +94,7 @@ define([
                     $(parent).append(menu);
                     //console.log(traj.paths[e]);
                     menu.click([traj.paths[e], menu], click_row);
-                    //menu.click(traj.paths, rm_traj);
+                    menu.end(traj.paths, rm_traj);
                     menu.mouseover(traj.paths[e], hover_row);
                     menu.mouseout(traj.paths[e], out_row);
                     //menu.dblclick
@@ -178,26 +178,29 @@ define([
                     //console.log(d.data.nodes[h]);
                     var slice = d.data[0].nodes.slice(h, h+2);
                     //console.log(slice);
-                    //console.log(scope.links);
+                    console.log(scope.links);
 
-                    var line = "<line>";
+                    var line = "<line";
                         //.attr("class", "graph_link")
                         //.attr("stroke-opacity", String(weight*.15))
                         //.attr("stroke-width", weight*2);
                         //.attr("id", function(d) {return "link-"+d.source.index+"-"+d.target.index});
 
-                    console.log(line);
+                    console.log(line+" stroke-width="+weight*2+">");
 
-                    $("#link_"+slice[0]+"_"+slice[1])
-                        .append(line);
-                            //.attr("stroke-opacity", String(weight*.15))
-                            //.attr("stroke-width", weight*2);
+                    var l = $("#link_"+slice[0]+"_"+slice[1])
+                        .append(line+" stroke-width="+weight*2+">")
+                        .append("<text>line<text>")
+                            .attr("stroke-opacity", String(weight*.15))
+                            .attr("stroke-width", weight*2);
+
+                            console.log(l);
 
                     $("#link_"+slice[1]+"_"+slice[0])
-                        .append(line);
-                            //.attr("class", "Line")
-                            //.attr("stroke-opacity", String(weight*.15))
-                            //.attr("stroke-width", weight*2);
+                        .append(line+" stroke-width="+weight*2+">")
+                        .append("line")
+                            .attr("stroke-opacity", String(weight*.15))
+                            .attr("stroke-width", weight*2);
                 }
                 menu.unbind("mouseover")
                     .unbind("mouseout");
