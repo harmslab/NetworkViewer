@@ -31,7 +31,7 @@ define([
             .attr("width", 790)
             .attr("height", this.height);
 
-            console.log(this.width);
+            //console.log(this.width);
 
             // Initialize the force
             this.force = d3.layout.force()
@@ -89,15 +89,17 @@ define([
                 //console.log(probability);
 
                 for (var e = 0; e < pathIndex.length; e++) {
-                    //console.log(e);
                     menu = this.add_element(pathIndex[e], probability[e]);
                     $(parent).append(menu);
                     //console.log(traj.paths[e]);
                     menu.click([traj.paths[e], menu], click_row);
-                    menu.end(traj.paths, rm_traj);
+                    //menu.dblclick([traj.paths[e], menu], rm_traj);
+                    //menu.end(traj.paths, rm_traj);
                     menu.mouseover(traj.paths[e], hover_row);
                     menu.mouseout(traj.paths[e], out_row);
                     //menu.dblclick
+
+                    //console.log([traj.paths[e], menu][0]);
                 }
             }
 
@@ -124,7 +126,7 @@ define([
 
             var hover_row = function(d) {
                 //console.log("hovered");
-                var weight = d.data.weight;
+                /*var weight = d.data.weight;
 
                 for (var h = 0; h < d.data.nodes.length-1; h++) {
                     //console.log(d.data.nodes[h]);
@@ -141,14 +143,14 @@ define([
                     d3.select("#link_"+slice[1]+"_"+slice[0])
                         .attr("stroke-opacity", String(weight*.005))
                         .attr("stroke-width", weight*1);
-                }
+                }*/
             }
 
             var out_row = function(d) {
                 //console.log("out");
                 //console.log(d.data)
 
-                for (var h = 0; h < d.data.nodes.length-1; h++) {
+                /*for (var h = 0; h < d.data.nodes.length-1; h++) {
                     //console.log(d.data.nodes[h]);
                     var slice = d.data.nodes.slice(h, h+2);
                     //console.log(d.data.nodes[h]);
@@ -163,22 +165,23 @@ define([
                     d3.select("#link_"+slice[1]+"_"+slice[0])
                         .attr("stroke-opacity", "1")
                         .attr("stroke-width", 1);
-                }
+                }*/
             }
 
             var click_row = function(d) {
                 //var scope = this;
-                //console.log(scope);
+                //console.log(d.toElement);
                 //console.log(d.data[1]);
 
                 var weight = d.data[0].weight;
                 var menu = d.data[1];
+                //console.log(menu);
 
                 for (var h = 0; h < d.data[0].nodes.length-1; h++) {
                     //console.log(d.data.nodes[h]);
                     var slice = d.data[0].nodes.slice(h, h+2);
                     //console.log(slice);
-                    console.log(scope.links);
+                    //console.log(scope.links);
 
                     var line = "<line";
                         //.attr("class", "graph_link")
@@ -186,44 +189,56 @@ define([
                         //.attr("stroke-width", weight*2);
                         //.attr("id", function(d) {return "link-"+d.source.index+"-"+d.target.index});
 
-                    console.log(line+" stroke-width="+weight*2+">");
+                    //console.log(line+" stroke-width="+weight*2+">");
 
                     var l = $("#link_"+slice[0]+"_"+slice[1])
-                        .append(line+" stroke-width="+weight*2+">")
-                        .append("<text>line<text>")
+                    //    .append(line+" stroke-width="+weight*2+">")
+                    //    .append("<text>line<text>")
+                            .addClass("selectedlinks")
                             .attr("stroke-opacity", String(weight*.15))
                             .attr("stroke-width", weight*2);
 
-                            console.log(l);
+                            //console.log(l);
 
-                    $("#link_"+slice[1]+"_"+slice[0])
-                        .append(line+" stroke-width="+weight*2+">")
-                        .append("line")
+                    var l2 = $("#link_"+slice[1]+"_"+slice[0])
+                    //    .append(line+" stroke-width="+weight*2+">")
+                    //    .append("line")
+                            .addClass("selectedlinks")
                             .attr("stroke-opacity", String(weight*.15))
                             .attr("stroke-width", weight*2);
                 }
-                menu.unbind("mouseover")
-                    .unbind("mouseout");
+                //menu.unbind("mouseover")
+                //    .unbind("mouseout");
                 //rm_traj();
+                //menu.click([d.data[0], l, l2], rm_traj);
 
             }
 
             var rm_traj = function(d) {
-                var weight = d.data.weight;
+                var weight = d.data[0].weight;
 
-                for (var h = 0; h < d.data.nodes.length-1; h++) {
+                for (var h = 0; h < d.data[0].nodes.length-1; h++) {
                     //console.log(d.data.nodes[h]);
-                    var slice = d.data.nodes.slice(h, h+2);
+                    var slice = d.data[0].nodes.slice(h, h+2);
                     //console.log(slice);
 
-                    d3.select("#link_"+slice[0]+"_"+slice[1])
+                    d.data[1] = d3.select("#link_"+slice[0]+"_"+slice[1])
                         .attr("stroke-opacity", "1")
                         .attr("stroke-width", 1);
 
-                    d3.select("#link_"+slice[1]+"_"+slice[0])
+                    d.data[1] = d3.select("#link_"+slice[1]+"_"+slice[0])
                         .attr("stroke-opacity", "1")
                         .attr("stroke-width", 1);
                 }
+                console.log(d.data[1]);
+
+                /*d.data[1] = d3.select("#link_"+slice[0]+"_"+slice[1])
+                    .attr("stroke-opacity", "1")
+                    .attr("stroke-width", 1);
+
+                d.data[2] = d3.select("#link_"+slice[1]+"_"+slice[0])
+                    .attr("stroke-opacity", "1")
+                    .attr("stroke-width", 1);*/
             }
 
             var probability = get_weight(traj);
@@ -390,7 +405,7 @@ define([
                     .attr("class", "graph_text")
                     .attr("dx", function(d) {return interpolateRadius(d.value)})
                     .attr("dy", ".35em")
-                    .text(function(d) { return d.id; });
+                    .text(function(d) { return d.binary; });
 
                 this.force_on();
             },
