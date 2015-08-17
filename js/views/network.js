@@ -96,8 +96,8 @@ define([
                     menu.click([traj.paths[e], menu], click_row);
                     //menu.dblclick([traj.paths[e], menu], rm_traj);
                     //menu.end(traj.paths, rm_traj);
-                    menu.mouseenter([traj.paths[e], menu], hover_row);
-                    menu.mouseleave([traj.paths[e], menu], out_row);
+                    //menu.mouseenter([traj.paths[e], menu], hover_row);
+                    //menu.mouseleave([traj.paths[e], menu], out_row);
                     //menu.dblclick
 
                     //console.log([traj.paths[e], menu][0]);
@@ -212,7 +212,19 @@ define([
                 var menu = d.data[1];
 
                 $(menu)
+                  //.attr("class", "table-hovered")
                   .css("background-color","white");
+
+                  /*$(menu).mouseover(function(){
+                    $(this)
+                      .css("background-color", "rgb(245, 245, 245)");
+                  });
+
+                  $(menu).mouseout(function(){
+                    $(this)
+                      .css("background-color", "white");
+                  });*/
+
 
                 var weight = d.data[0].weight;
 
