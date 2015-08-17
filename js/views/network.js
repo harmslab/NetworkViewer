@@ -96,8 +96,8 @@ define([
                     menu.click([traj.paths[e], menu], click_row);
                     //menu.dblclick([traj.paths[e], menu], rm_traj);
                     //menu.end(traj.paths, rm_traj);
-                    menu.mouseover([traj.paths[e], menu], hover_row);
-                    menu.mouseout([traj.paths[e], menu], out_row);
+                    menu.mouseenter([traj.paths[e], menu], hover_row);
+                    menu.mouseleave([traj.paths[e], menu], out_row);
                     //menu.dblclick
 
                     //console.log([traj.paths[e], menu][0]);
@@ -139,7 +139,7 @@ define([
 
                     //$("#node_"+d.data[h])
                     //    .attr("fill", "red");
-                    console.log(this.linkNum);
+                    //console.log(this.linkNum);
 
                     $("#link_"+slice[0]+"_"+slice[1])
                         .attr("stroke-opacity", String(weight*.15))
@@ -177,7 +177,7 @@ define([
                 var menu = d.data[1];
                 //console.log(menu);
                 $(menu)
-                  .css("color","red");
+                  .css("background-color","lightgray");
 
                 this.linkNum = [];
 
@@ -193,12 +193,14 @@ define([
                             .attr("stroke-width", weight*2);
 
                     $("#link_"+slice[1]+"_"+slice[0])
+                          .append("#link_"+slice[0]+"_"+slice[1])
                             .attr("stroke-opacity", String(weight*.15))
                             .css("stroke","black")
                             .attr("stroke-width", weight*2);
                 }
-                /*menu.unbind("mouseover")
-                    .unbind("mouseout");*/
+                //menu.unbind("mouseenter")
+                //    .unbind("mouseleave");
+
                 menu.click([d.data[0], menu], rm_traj);
 
                 console.log(this.linkNum);
@@ -210,7 +212,7 @@ define([
                 var menu = d.data[1];
 
                 $(menu)
-                  .css("color","black");
+                  .css("background-color","white");
 
                 var weight = d.data[0].weight;
 
@@ -232,8 +234,8 @@ define([
 
                 menu.click([d.data[0], menu], click_row);
 
-                /*menu.bind("mouseover")
-                    .bind("mouseout");*/
+                //menu.bind("mouseleave")
+                //    .bind("mouseenter");
             }
 
             var probability = get_weight(traj);
