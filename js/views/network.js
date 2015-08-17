@@ -96,11 +96,16 @@ define([
                     menu.click([traj.paths[e], menu], click_row);
                     //menu.dblclick([traj.paths[e], menu], rm_traj);
                     //menu.end(traj.paths, rm_traj);
-                    //menu.mouseenter([traj.paths[e], menu], hover_row);
-                    //menu.mouseleave([traj.paths[e], menu], out_row);
+                    menu.mouseover([traj.paths[e], menu], hover_row);
+                    menu.mouseout([traj.paths[e], menu], out_row);
                     //menu.dblclick
 
                     //console.log([traj.paths[e], menu][0]);
+
+                    if ("click") {
+                        menu.undbind("mouseover")
+                            .unbind("mouseout");
+                    }
                 }
             }
 
@@ -129,6 +134,13 @@ define([
                 //console.log("hovered");
                 var menu = d.data[1];
                 var weight = d.data[0].weight;
+
+                //console.log(this.linkNum);
+
+                $(this.linkNum)
+                    .attr("stroke-opacity", String(weight*.15))
+                    .css("stroke","black")
+                    .attr("stroke-width", weight*2);
 
                 //var scope = this;
 
@@ -177,43 +189,48 @@ define([
                 var menu = d.data[1];
                 //console.log(menu);
                 $(menu)
-                  .css("background-color","lightgray");
+                    .css("color", "red")
+                    .css("font-size","17px");
+                 // .css("background-color","lightgray");
 
-                this.linkNum = [];
+                linkNum = [];
 
                 for (var h = 0; h < d.data[0].nodes.length-1; h++) {
                     var slice = d.data[0].nodes.slice(h, h+2);
 
-                    this.linkNum.push("#link_"+slice[0]+"_"+slice[1]);
+                    linkNum.push("#link_"+slice[0]+"_"+slice[1]);
                     //console.log(this.linkNum);
 
                     $("#link_"+slice[0]+"_"+slice[1])
+                        .append("#link_"+slice[0]+"_"+slice[1])
                             .attr("stroke-opacity", String(weight*.15))
                             .css("stroke","black")
                             .attr("stroke-width", weight*2);
 
                     $("#link_"+slice[1]+"_"+slice[0])
-                          .append("#link_"+slice[0]+"_"+slice[1])
+                        .append("#link_"+slice[0]+"_"+slice[1])
                             .attr("stroke-opacity", String(weight*.15))
                             .css("stroke","black")
                             .attr("stroke-width", weight*2);
                 }
-                //menu.unbind("mouseenter")
-                //    .unbind("mouseleave");
+                menu.unbind("mouseenter")
+                    .unbind("mouseleave");
 
                 menu.click([d.data[0], menu], rm_traj);
 
-                console.log(this.linkNum);
+                //console.log(this.linkNum);
 
-                return this.linkNum;
+                return linkNum;
             }
 
             var rm_traj = function(d) {
                 var menu = d.data[1];
 
                 $(menu)
+                    .css("font-size", "14px")
+                    .css("color", "black");
                   //.attr("class", "table-hovered")
-                  .css("background-color","white");
+                  //.css("background-color","white");
 
                   /*$(menu).mouseover(function(){
                     $(this)
