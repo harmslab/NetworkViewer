@@ -50,6 +50,8 @@ define([
             this.form();
             this.update_data();
             this.draw_trajectory_table();
+
+            //console.log(this.model.get("trajectories");
         },
 
         draw_trajectory_table: function(){
@@ -58,6 +60,19 @@ define([
 
             // Click function for trajectory
             var traj = this.model.get("trajectories");
+            console.log(traj);
+
+            //for (var i = 0; i < traj.paths.length; i++) {
+
+            //}
+
+            //var traj_mapping =
+
+            this.traj_links = this.svg.selectAll(".graph_link")
+                .data(this.model.get("links"))
+              .enter().append("line")
+                .attr("class", "graph_link")
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_traj"})
 
             var dataTable = function() {}
 
@@ -94,18 +109,8 @@ define([
 
                     //console.log(traj.paths[e]);
                     menu.click([traj.paths[e], menu], click_row);
-                    //menu.dblclick([traj.paths[e], menu], rm_traj);
-                    //menu.end(traj.paths, rm_traj);
                     menu.mouseover([traj.paths[e], menu], hover_row);
-                    menu.mouseout([traj.paths[e], menu], out_row);
-                    //menu.dblclick
-
-                    //console.log([traj.paths[e], menu][0]);
-
-                    if ("click") {
-                        menu.undbind("mouseover")
-                            .unbind("mouseout");
-                    }
+                    //menu.mouseout([traj.paths[e], menu], out_row);
                 }
             }
 
@@ -137,10 +142,10 @@ define([
 
                 //console.log(this.linkNum);
 
-                $(this.linkNum)
+                /*$(this.linkNum)
                     .attr("stroke-opacity", String(weight*.15))
                     .css("stroke","black")
-                    .attr("stroke-width", weight*2);
+                    .attr("stroke-width", weight*2);*/
 
                 //var scope = this;
 
@@ -162,7 +167,9 @@ define([
                         .attr("stroke-width", weight*2);
                 }
 
-                //menu.bind("mouseover")
+                menu.mouseout([d.data[0], menu], out_row);
+
+                menu.bind("click")
                 //    .bind("mouseout");
             }
 
@@ -181,6 +188,9 @@ define([
                         .attr("stroke-opacity", "1")
                         .attr("stroke-width", 1);
                 }
+
+                //menu.bind("mouseover")
+                //    .bind("mouseout");
             }
 
             var click_row = function(d) {
@@ -201,20 +211,31 @@ define([
                     linkNum.push("#link_"+slice[0]+"_"+slice[1]);
                     //console.log(this.linkNum);
 
-                    $("#link_"+slice[0]+"_"+slice[1])
-                        .append("#link_"+slice[0]+"_"+slice[1])
+                    d3.select("#link_"+slice[0]+"_"+slice[1])
                             .attr("stroke-opacity", String(weight*.15))
-                            .css("stroke","black")
-                            .attr("stroke-width", weight*2);
+                            .attr("style","stroke: black;")
+                            .attr("stroke-width", weight*2)
+                        /*.append("line")
+                            .attr("id", "#link_"+slice[0]+"_"+slice[1])
+                            .attr("stroke-opacity", String(weight*.15))
+                            .attr("style","stroke: black;")
+                            .attr("stroke-width", weight*2);*/
 
-                    $("#link_"+slice[1]+"_"+slice[0])
-                        .append("#link_"+slice[0]+"_"+slice[1])
+                    d3.select("#link_"+slice[1]+"_"+slice[0])
                             .attr("stroke-opacity", String(weight*.15))
-                            .css("stroke","black")
-                            .attr("stroke-width", weight*2);
+                            .attr("style","stroke: black;")
+                            .attr("stroke-width", weight*2)
+                        /*.append("line")
+                            .attr("id", "#link_"+slice[0]+"_"+slice[1])
+                            .attr("stroke-opacity", String(weight*.15))
+                            .attr("style","stroke: black;")
+                            .attr("stroke-width", weight*2);*/
+
+                    menu.unbind("mouseover")
+                        .unbind("mouseout");
+
+                    //console.log(menu);
                 }
-                menu.unbind("mouseenter")
-                    .unbind("mouseleave");
 
                 menu.click([d.data[0], menu], rm_traj);
 
@@ -250,14 +271,14 @@ define([
                     var slice = d.data[0].nodes.slice(h, h+2);
                     //console.log(slice);
 
-                    $("#link_"+slice[0]+"_"+slice[1])
+                    d3.select("#link_"+slice[0]+"_"+slice[1])
                         .attr("stroke-opacity", "1")
-                        .css("stroke","#999")
+                        .attr("style", "stroke: #999;")
                         .attr("stroke-width", 1);
 
-                    $("#link_"+slice[1]+"_"+slice[0])
+                    d3.select("#link_"+slice[1]+"_"+slice[0])
                         .attr("stroke-opacity", "1")
-                        .css("stroke","#999")
+                        .attr("style", "stroke: #999;")
                         .attr("stroke-width", 1);
                 }
 
@@ -308,6 +329,7 @@ define([
             //
             //Starts D3's force network simulation
             //
+            console.log(this.force.links)
             this.force
                 .nodes(this.model.get("nodes"))
                 .links(this.model.get("links"))
@@ -324,17 +346,44 @@ define([
                 .attr("class", "graph_node")
                 .attr("id", function(d) {return "node_"+d.index})
                 .call(this.force.drag);
+
+                //console.log(this.nodes.enter().append("div"));
         },
 
         draw_links: function() {
             //
             //Add link data to D3 force simulation.
             //
+            //console.log(this.model.get("links"));
             this.links = this.svg.selectAll(".graph_link")
                 .data(this.model.get("links"))
               .enter().append("line")
                 .attr("class", "graph_link")
-                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index})
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index});
+
+            this.traj_links = this.svg.selectAll(".traj_link")
+                .data(this.model.get("links"))
+              .enter().append("line")
+                .attr("class", "traj_link")
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_traj"});
+                //.attr("x1")
+                //this.links.append("line");
+                /*.data(this.model.get("links"))
+              .enter().append("line")
+                .attr("class", "graph_link")
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_traj"})*/
+
+            //this.link_traj = this,
+            /*this.link_traj = this.svg.selectAll(".graph_link")
+                .data(this.model.get("links"))
+              .enter().append("line")
+                .attr("class", "graph_link")
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_traj"})
+*/
+            //this.traj_links = this.svg.selectAll(".graph_link")
+            //    .data(this.model.get("trajectories"))
+                //var traj = this.model.get("trajectories")
+                //console.log(traj.paths);
         },
 
         draw_trajectory: function(trajectory) {
@@ -404,9 +453,20 @@ define([
                 // How to handle each tick in a force simulation.
                 //
                 var scope = this;
+                //console.log(this.force.on("tick"));
+                console.log(this.links);
+                console.log(this.traj_links);
 
                 this.force.on("tick", function () {
+                    //console.log("tick")
                     scope.links
+                    .attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+                    //console.log(scope.traj_links);
+
+                    scope.traj_links
                     .attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
