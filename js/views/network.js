@@ -88,7 +88,8 @@ define([
 
                 column = $("<td>").attr("id", "tablecolumn_"+pathIndex)
                     .text("Trajectory "+pathIndex)
-                    .attr("padding-right","300");
+                    .attr("padding-right","300")
+                    .attr("class", "network-viewer");
 
                 weight = $("<td>").attr("id", "tablecolumn_"+weight)
                     .text(weight);
@@ -488,7 +489,7 @@ define([
                 var interpolateRadius = d3.interpolate(2, 13);
 
                 this.labels = this.nodes.append("text")
-                    .attr("class", "graph_text")
+                    .attr("class", "graph_text network-viewer")
                     .attr("dx", function(d) {return interpolateRadius(d.value)})
                     .attr("dy", ".35em")
                     .text(function(d) { return d.binary; });

@@ -2,76 +2,94 @@
 <html>
     <head>
         <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="css/strict.css">
         <link rel="stylesheet" type="text/css" href="css/network.css">
+
         <script data-main="js/app" src="lib/require/require.js"></script>
 
     </head>
     <body>
-        <div class="container" id="main_page">
-            <div id="cool"></div>
+        <div class="network-viewer container" id="main_page">
 
             <!-- Page header for the webpage -->
-            <div class="page-header container-fluid">
-                <h1>NetworkViewer <small>Interactive Network Visualization</small>
+            <div class="row page-header">
 
-                  <div class="dropdown" style="float: right; margin-left: 20px;">
-                    <ul class="nav nav-pills" role="tablist">
-                      <li role="presentation" class="dropdown">
-                        <button id="drop4" href="#" class="dropdown-toggle btn btn-default btn-lg" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          Data List
-                          <span class="caret"></span>
-                        </button>
-                        <ul id="menu1" class="dropdown-menu" aria-labeledby="drop4">
-                          <!-- The menu items are placed in javascript.-->
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
+                <!-- Title of application -->
+                <h1 class="col-md-8">NetworkViewer <small>Interactive Network Visualization</small></h1>
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal" style="float: right;">
-                      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </button>
+                <!-- Drop-down menu -->
+                <div class="dropdown col-md-1" style="float: right; margin-left: 20px;">
+                  <ul class="nav nav-pills" role="tablist">
+                    <li role="presentation" class="dropdown">
+                      <button id="drop4" href="#" class="dropdown-toggle btn btn-default btn-lg" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Data List
+                        <span class="caret"></span>
+                      </button>
+                      <ul id="menu1" class="dropdown-menu" aria-labeledby="drop4">
+                        <!-- The menu items are placed in javascript.-->
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
 
-                    <button id="colorbutton" type="button" class="btn btn-default btn-lg" style="float: right;">
-                      Color
-                    </button>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-default btn-lg col-md-1" data-toggle="modal" data-target="#myModal" style="float: right;">
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                </button>
 
-                </h1>
+                <!-- -->
+                <button id="colorbutton" type="button" class="btn btn-default btn-lg col-md-1" style="float: right;">
+                  Color
+                </button>
+
             </div>
 
-            <!-- The choice of application is displayed here. -->
-            <div class="container-fluid" id="app_container">
+            <!-- Main Application window -->
+            <div class="row" id="app_container">
 
-                <form class="form-inline">
-                  <h5><strong>Indentifier</strong></h5>
-                  <div class="form-group">
-                    <label class="sr-only" for="inputNumber">Identifier</label>
-                    <input type="text" class="form-control" id="inputNumber" placeholder="Node number">
-                  </div>
-                  <button type="button" class="btn btn-default" id="gobutton">Go</button>
-                </form>
+                <!-- Left panel for trajectory analysis -->
+                <div class="col-md-3">
 
-                <div class="list"></div>
+                    <!-- Add search form -->
+                    <form class="form-inline row">
 
-                <p id="sliderText">
-                  <label for="amount">Size:</label>
-                  <input type="text" id="amount" readonly style="border:0; font-weight:bold;">
-                </p>
+                        <h5><strong>Indentifier</strong></h5>
 
-                <div id="slider"></div>
+                        <div class="form-group">
+                            <label class="sr-only" for="inputNumber">Identifier</label>
+                            <input type="text" class="form-control" id="inputNumber" placeholder="Node number">
+                        </div>
 
-                <table class="table table-hover">
-                    <tbody id = "tablebody">
-                        <thead>
-                            <th colspan="1">Trajectory #</th>
-                            <th colspan="1">Score</th>
-                        </thead>
-                    </tbody>
-                </table>
+                        <button type="button" class="btn btn-default" id="gobutton">Go</button>
+                    </form>
 
-                <!-- Main svg area -->
-                <div id="network_viewer"></div>
+                    <!-- -->
+                    <div class="list row"></div>
+
+                    <!-- -->
+                    <p id="sliderText row">
+                      <label for="amount">Size:</label>
+                      <input type="text" id="amount" readonly style="border:0; font-weight:bold;">
+                    </p>
+
+                    <!-- Slider for nide side-->
+                    <div id="slider row"></div>
+
+                    <!-- Init table for trajectory analysis. -->
+                    <table class="table table-hover row">
+                        <tbody id = "tablebody">
+                            <thead>
+                                <th colspan="1">Trajectory #</th>
+                                <th colspan="1">Score</th>
+                            </thead>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- Viewer panel -->
+                <div class="col-md-9" id="network_viewer"></div>
 
             </div>
 
