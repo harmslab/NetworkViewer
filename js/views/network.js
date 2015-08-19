@@ -355,17 +355,73 @@ define([
             //Add link data to D3 force simulation.
             //
             //console.log(this.model.get("links"));
+            var scope = this;
             this.links = this.svg.selectAll(".graph_link")
                 .data(this.model.get("links"))
               .enter().append("line")
                 .attr("class", "graph_link")
                 .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index});
 
+            //this.links
+            //    .attr("stroke-width", "5");
+
             this.traj_links = this.svg.selectAll(".traj_link")
                 .data(this.model.get("links"))
               .enter().append("line")
                 .attr("class", "traj_link")
-                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_traj"});
+                .attr("style", "stroke: gray;")
+                //.attr("stroke-width", "1")
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_traj"})
+
+                //for (var i = 0; i < this.links[0].length; i++) {
+                    //console.log(this.links[0][i].__data__.source.x);
+                    //console.log(this.traj_links);
+                    /*this.traj_links
+                        .attr("x1", function() { for (var i = 0; i < scope.links[0].length; i++) {return scope.links[0][i].__data__.source.x} })
+                        .attr("y1", function() { for (var i = 0; i < scope.links[0].length; i++) {return scope.links[0][i].__data__.source.y} })
+                        .attr("x2", function() { for (var i = 0; i < scope.links[0].length; i++) {return scope.links[0][i].__data__.target.x} })
+                        .attr("y2", function() { for (var i = 0; i < scope.links[0].length; i++) {return scope.links[0][i].__data__.target.y} });
+*/
+                //}
+
+                /*.attr("x1", function(d) { return d.source.x; })
+                .attr("y1", function(d) { return d.source.y; })
+                .attr("x2", function(d) { return d.target.x; })
+                .attr("y2", function(d) { return d.target.y; });*/
+
+            this.old_links = this.svg.selectAll(".old_link")
+                .data(this.model.get("links"))
+              .enter().append("line")
+                .attr("class", "old_link")
+                .attr("style", "stroke: gray;")
+                //.attr("stroke-width", "1")
+                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index+"_old"});
+
+            var link_combine = $.extend(this.links, this.traj_links);
+            /*for (var i = 0; i < this.links[0].length; i++) {
+                var linked = $.extend({}, this.links[0][i], this.traj_links[0][i]);
+            }*/
+
+            //this.new_links = this.svg.data(this.link_combined);
+            //var link_combined = $.extend(true, this.traj_links, this.links);
+            //var clone = $.extend(this.links, this.traj_links);
+
+            //var cloned = $.extend(this.links);
+            //clone.attr("id", "s");
+            //    clone.attr("id ")
+
+            //var copy = Object.assign({}, this.links);
+            /*getLinks(this.links);
+
+            var getLinks = function(links) {
+                if(links === null || typeof links !== 'object') {
+                    return links;
+                }
+            }*/
+            console.log(this.links[0][4].__data__);
+            //console.log(link_combine);
+            console.log(this.links[0]);
+            //console.log(clone[0]);
                 //.attr("x1")
                 //this.links.append("line");
                 /*.data(this.model.get("links"))
@@ -456,6 +512,7 @@ define([
                 //console.log(this.force.on("tick"));
                 console.log(this.links);
                 console.log(this.traj_links);
+                console.log(this.force.on("tick", function(){}))
 
                 this.force.on("tick", function () {
                     //console.log("tick")
@@ -466,11 +523,11 @@ define([
                     .attr("y2", function(d) { return d.target.y; });
                     //console.log(scope.traj_links);
 
-                    scope.traj_links
+                    /*scope.traj_links
                     .attr("x1", function(d) { return d.source.x; })
                     .attr("y1", function(d) { return d.source.y; })
                     .attr("x2", function(d) { return d.target.x; })
-                    .attr("y2", function(d) { return d.target.y; });
+                    .attr("y2", function(d) { return d.target.y; });*/
 
                     scope.nodes
                     .attr("transform", function(d) {
