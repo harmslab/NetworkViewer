@@ -23,6 +23,7 @@ define([
             "color_on": false,
             "node_text_on": true,
             "node_radius": 10,
+            "node_shape": "circle",
             "add_node_names": true,
         },
 

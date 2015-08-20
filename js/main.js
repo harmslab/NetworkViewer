@@ -1329,8 +1329,8 @@ requirejs([
     this.network_viewer = new NetworkView( { "model" : this.network_model } );
     
     // Introduce trajectories
-    this.trajectory_model = new TrajectoryModel( trajectory );
+    //this.trajectory_model = new TrajectoryModel( trajectory );
     
-    this.trajectory_table = new TrajectoryTable( {"model" : this.trajectory_model });
+    //this.trajectory_table = new TrajectoryTable( {"model" : this.trajectory_model });
 
 });

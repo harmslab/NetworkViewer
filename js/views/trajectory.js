@@ -16,24 +16,21 @@ define([
     var TrajectoryView = backbone.View.extend({
         
         
-        initialize: function(){
+        initialize: function(NetworkView){
             //
             //Initialize TrajectoryWidget
             //
-            this.element = "#network_viewer";
             
-            var scope = this;
-
-            // Click function for trajectory
-            var traj = this.model.get("trajectories");
+            this.network_view = NetworkView;
+            
+            this.traj = this.model.get("trajectories");
         },
         
-        
-        draw_trajectory: function(){
-
+        draw_trajectories: function(){
+            
         },
         
-        rm_trajectory: function(){
+        undraw_trajectories: function(){
 
         },
         

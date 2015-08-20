@@ -33,7 +33,7 @@ define([
             
             // Set trajectoreis as property of model.
             this.set({
-                "trajectories": trajectories; 
+                "trajectories": trajectories,
                 
             });
 /*

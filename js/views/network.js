@@ -37,11 +37,16 @@ define([
                 .linkDistance(this.model.get("link_distance"))
                 .size([this.width-300, this.height-10])
 
+            // Get model data
+            var node_data = this.model.get("nodes");
+            var link_data = this.model.get("links");
+            var node_shape = this.model.get("node_shape");
+            
             // Start force simulation.
-            this.start_force();
-            this.draw_links();
-            this.draw_nodes();
-            this.node_shape();
+            this.start_force(node_data, link_data);
+            this.draw_links(link_data);
+            this.draw_nodes(node_data);
+            this.node_shape(node_shape);
             this.node_text();
             this.node_color();
             this.size_slider();
@@ -49,36 +54,35 @@ define([
             this.update_data();
         },
 
-        start_force: function(){
+        start_force: function(nodes, links){
             //
             //Starts D3's force network simulation
             //
             this.force
-                .nodes(this.model.get("nodes"))
-                .links(this.model.get("links"))
+                .nodes(nodes)
+                .links(links)
                 .start();
         },
 
-        draw_nodes: function() {
+        draw_nodes: function(nodes) {
             //
-            //Add node data to D3 force simulation.
+            // Add node data to D3 force simulation.
             //
             this.nodes = this.svg.selectAll(".graph_node")
-                .data(this.model.get("nodes"))
+                .data(nodes)
               .enter().append("g")
                 .attr("class", "graph_node")
                 .attr("id", function(d) {return "node_"+d.index})
                 .call(this.force.drag);
 
-                //console.log(this.nodes.enter().append("div"));
         },
 
-        draw_links: function() {
+        draw_links: function(links) {
             //
-            //Add link data to D3 force simulation.
+            // Add link data to D3 force simulation.
             //
             this.links = this.svg.selectAll(".graph_link")
-                .data(this.model.get("links"))
+                .data(links)
               .enter().append("line")
                 .attr("class", "graph_link")
                 .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index});
@@ -97,7 +101,7 @@ define([
 
             var interpolateRadius = d3.interpolate(2, 13);
 
-            this.circles = this.nodes.append("circle")
+            this.circles = this.nodes.append(shape)
                 .attr("class", "graph_circle")
                 .attr("id", function(d) {return "node-"+d.index})
                 .attr("node-index", function(d) {return d.index})
@@ -112,16 +116,16 @@ define([
             var scope = this;
 
             this.force.on("tick", function () {
-                //console.log("tick")
+
                 scope.links
-                .attr("x1", function(d) { return d.source.x; })
-                .attr("y1", function(d) { return d.source.y; })
-                .attr("x2", function(d) { return d.target.x; })
-                .attr("y2", function(d) { return d.target.y; });
+                    .attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
 
                 scope.nodes
-                .attr("transform", function(d) {
-                    return "translate(" + d.x + "," + d.y + ")";
+                    .attr("transform", function(d) {
+                        return "translate(" + d.x + "," + d.y + ")";
                 })
             });
 
