@@ -3,9 +3,11 @@ requirejs([
     'jquery',
     'd3',
     'js/models/network',
+    'js/models/trajectory',
     'js/views/network',
-    'js/views/modal'
-], function($, d3, NetworkModel, NetworkView, NetworkModal) {
+    'js/views/modal',
+    'js/views/traj-table'
+], function($, d3, NetworkModel, TrajectoryModel, NetworkView, NetworkModal, TrajectoryTable) {
 
     // Data plotted in network
     var data1 = {
@@ -1318,11 +1320,17 @@ requirejs([
     var data = [data1];
 
     // Initializing backbone model for network app.
-    this.network_model = new NetworkModel( data, trajectory );
+    this.network_model = new NetworkModel( data );
     //console.log(trajectory);
 
     // Initializing all backbone views.
     this.network_modal = new NetworkModal();
+    
     this.network_viewer = new NetworkView( { "model" : this.network_model } );
+    
+    // Introduce trajectories
+    this.trajectory_model = new TrajectoryModel( trajectory );
+    
+    this.trajectory_table = new TrajectoryTable( {"model" : this.trajectory_model });
 
 });
