@@ -16,55 +16,48 @@ define([
 
         // Initial attributes
         defaults:{
-            "opacity": 0.5,     // opacity of a trajectory link
-            "colors": "black",  // color of trajectory link
-            "drawn_traj": {},   // object to story drawn trajectories
+            "link_opacity": 1,     // opacity of a trajectory link
+            "link_color": "#999",  // color of trajectory link
+            "link_width": 2,
+            //"drawn_traj": {},   // object to story drawn trajectories
         },
 
         initialize: function(data){
             // trajectories is going to be an array of objects.
-
+            //
+            
             this.set({
                 "data": data,
             });
             
             // Create a trajectories object.
-            var trajectories = self.init_link_map(data.paths);
+            var trajectories = this.init_link_map(data.paths);
             
-            // Set trajectoreis as property of model.
+            // Set trajectories as property of model.
             this.set({
                 "trajectories": trajectories,
-                
+                "drawn_traj": trajectories,
             });
-/*
-            // Make DEEP copy (first argument set to true) of first set
-            // of data for initializing our model. Copy is necessary to
-            // avoid pointing with reference.
-            var data_copy = $.extend(true, {}, data[0]);
 
-            this.set({
-                "nodes": data_copy.nodes,
-                "links": data_copy.links,
-                "ref": data_copy.ref
-            })
-*/
         },
 
         path_to_links: function(path){
             // Convert a trajectory to array of links to color
+            //
             
             var links = [];
-            
-            for (i==0; i < path.length - 1; i++) {
+            for (var i=0; i < path.length - 1; i++) {
                 // link object that mirrors network links
                 var link = {
                     "source" : path[i],
-                    "target" : path[i+1],                    
+                    "target" : path[i+1],
+                    "color" : this.get("link_color"),
+                    "opacity" : this.get("link_opacity"),
+                    "width" : this.get("link_width"),                 
                 }
                 
                 links.push(link)
             }
-            
             return links
         },
         
@@ -76,18 +69,18 @@ define([
             //  "trajectory 2" : [{"source": 1, "target": 4}, ...],
             //    ...
             // }
+            //
             
             var mapping = {};
             
-            for(i==0; i < data.length; i++) {
+            for(var i=0; i < data.length; i++) {
                 // Key to mapping is trajectory + index
-                var key = "trajectory" + String(m);
+                var key = "trajectory" + String(i);
                 
-                mapping[key] = this.path_to_links(data[i])                
+                mapping[key] = this.path_to_links(data[i].nodes)                
             }
+            return mapping
         },
-        
-        
         
         
     });

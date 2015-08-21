@@ -38,15 +38,15 @@ define([
                 .size([this.width-300, this.height-10])
 
             // Get model data
-            var node_data = this.model.get("nodes");
-            var link_data = this.model.get("links");
-            var node_shape = this.model.get("node_shape");
+            this.node_data = this.model.get("nodes");
+            this.link_data = this.model.get("links");
+            this.node_shape_data = this.model.get("node_shape");
             
             // Start force simulation.
-            this.start_force(node_data, link_data);
-            this.draw_links(link_data);
-            this.draw_nodes(node_data);
-            this.node_shape(node_shape);
+            this.start_force(this.node_data, this.link_data);
+            this.draw_links(this.link_data);
+            this.draw_nodes(this.node_data);
+            this.node_shape(this.node_shape_data);
             this.node_text();
             this.node_color();
             this.size_slider();
@@ -54,14 +54,19 @@ define([
             this.update_data();
         },
 
+        /* 
+        ----------------------------------------------------------
+        Network initializing
+        ----------------------------------------------------------
+        */
+
         start_force: function(nodes, links){
             //
             //Starts D3's force network simulation
             //
-            this.force
-                .nodes(nodes)
-                .links(links)
-                .start();
+            this.force_nodes = this.force.nodes(nodes);
+            this.force_links = this.force.links(links);
+            this.force.start()
         },
 
         draw_nodes: function(nodes) {
@@ -69,12 +74,11 @@ define([
             // Add node data to D3 force simulation.
             //
             this.nodes = this.svg.selectAll(".graph_node")
-                .data(nodes)
-              .enter().append("g")
-                .attr("class", "graph_node")
-                .attr("id", function(d) {return "node_"+d.index})
-                .call(this.force.drag);
-
+                .data(nodes, function(d){ return d.id; })
+                .enter().append("g")
+                    .attr("class", "graph_node")
+                    .attr("id", function(d) {return "node_"+d.index})
+                    .call(this.force.drag);
         },
 
         draw_links: function(links) {
@@ -82,12 +86,21 @@ define([
             // Add link data to D3 force simulation.
             //
             this.links = this.svg.selectAll(".graph_link")
-                .data(links)
-              .enter().append("line")
-                .attr("class", "graph_link")
-                .attr("id", function(d) {return "link_"+d.source.index+"_"+d.target.index});
-
+                .data(links, function(d){ return d.id; })
+                .enter().append("line")
+                    .attr("class", "graph_link")
+                    .attr("id", function(d) {return d.id})
+                    .attr("stroke", function(d){ return d.color; })
+                    .attr("stroke-width", function(d){ return d.width; })
+                    .attr("opacity", function(d){ return d.opacity; })
+                    .attr("stroke-opacity", function(d) { return d.opacity; });
         },
+        
+        /* 
+        ----------------------------------------------------------
+        Setting node and SVG representations.
+        ----------------------------------------------------------
+        */
         
         node_shape: function(shape) {
             //
@@ -107,39 +120,17 @@ define([
                 .attr("node-index", function(d) {return d.index})
                 .attr("r", function(d){ return interpolateRadius(d.value) });
 
-            },
-
-        force_on: function() {
-            //
-            // How to handle each tick in a force simulation.
-            //
-            var scope = this;
-
-            this.force.on("tick", function () {
-
-                scope.links
-                    .attr("x1", function(d) { return d.source.x; })
-                    .attr("y1", function(d) { return d.source.y; })
-                    .attr("x2", function(d) { return d.target.x; })
-                    .attr("y2", function(d) { return d.target.y; });
-
-                scope.nodes
-                    .attr("transform", function(d) {
-                        return "translate(" + d.x + "," + d.y + ")";
-                })
-            });
-
-            this.force.start();
         },
 
         node_text: function(){
             //
             //Add text to each node based on each node's "id".
             //
+            
             var interpolateRadius = d3.interpolate(2, 13);
 
             this.labels = this.nodes.append("text")
-                .attr("class", "graph_text network-viewer")
+                .attr("class", "graph_text")
                 .attr("dx", function(d) {return interpolateRadius(d.value)})
                 .attr("dy", ".35em")
                 .text(function(d) { return d.binary; });
@@ -164,6 +155,43 @@ define([
                     .attr("fill", function(d){return colorUpdate(d.value)});
             });
         },
+
+        force_on: function() {
+            //
+            // How to handle each tick in a force simulation. 
+            // Force object updates the svg representation.
+            //
+            var scope = this;
+            
+            this.force.on("tick", function () {
+
+                scope.links
+                    .attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+
+                scope.nodes
+                    .attr("transform", function(d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                })
+            });
+
+            this.force.start();
+        },
+
+        /* 
+        ----------------------------------------------------------
+        Update node a link repesentation SVG representations.
+        ----------------------------------------------------------
+        */
+
+
+        /* 
+        ----------------------------------------------------------
+        Network Widgets
+        ----------------------------------------------------------
+        */
 
         size_slider: function() {
             var scope = this;
