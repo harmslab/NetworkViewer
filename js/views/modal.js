@@ -33,7 +33,6 @@ define([
                 Render the modal template.
             */
             this.$el.html(this.template());
-            console.log(this);
             return this;
         },
 
@@ -42,9 +41,7 @@ define([
                 Show the modal.
             */
             $("#myModal").modal({show:true})
-            console.log(("#myModal").modal({show:true}))
         }
     });
-    console.log(NetworkModal);
     return NetworkModal;
 });

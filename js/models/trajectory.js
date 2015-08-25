@@ -18,7 +18,7 @@ define([
         defaults:{
             "link_opacity": 1,     // opacity of a trajectory link
             "link_color": "#999",  // color of trajectory link
-            "link_width": 2,
+            "link_width": 6,
             //"drawn_traj": {},   // object to story drawn trajectories
         },
 
@@ -47,13 +47,15 @@ define([
             
             var links = [];
             for (var i=0; i < path.length - 1; i++) {
+                
                 // link object that mirrors network links
                 var link = {
+                    "id" : "traj_" + path[i] + "_" + path[i+1],
                     "source" : path[i],
                     "target" : path[i+1],
                     "color" : this.get("link_color"),
                     "opacity" : this.get("link_opacity"),
-                    "width" : this.get("link_width"),                 
+                    "width" : this.get("link_width"),               
                 }
                 
                 links.push(link)

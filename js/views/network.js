@@ -33,9 +33,6 @@ define([
 
             // Initialize the force
             this.force = d3.layout.force()
-                .charge(this.model.get("charge"))
-                .linkDistance(this.model.get("link_distance"))
-                .size([this.width-300, this.height-10])
 
             // Get model data
             this.node_data = this.model.get("nodes");
@@ -49,6 +46,7 @@ define([
             this.node_shape(this.node_shape_data);
             this.node_text();
             this.node_color();
+            this.force_on();
             this.size_slider();
             this.form();
             this.update_data();
@@ -64,36 +62,59 @@ define([
             //
             //Starts D3's force network simulation
             //
-            this.force_nodes = this.force.nodes(nodes);
-            this.force_links = this.force.links(links);
-            this.force.start()
+            this.force
+                .nodes(nodes)
+                .links(links)
+                .charge(this.model.get("charge"))
+                .linkDistance(this.model.get("link_distance"))
+                .size([this.width-300, this.height-10])
+                .start()
+            
+            this.force_nodes = this.force.nodes();
+            this.force_links = this.force.links();
         },
 
         draw_nodes: function(nodes) {
             //
             // Add node data to D3 force simulation.
             //
+            
+            // Define the node data and link to svg object id
             this.nodes = this.svg.selectAll(".graph_node")
-                .data(nodes, function(d){ return d.id; })
-                .enter().append("g")
+                .data(nodes, function(d){ return d.id; });
+            
+            // Create an svg group object for node drawing and
+            // enter the drawing
+            this.nodes.enter().append("g")
                     .attr("class", "graph_node")
                     .attr("id", function(d) {return "node_"+d.index})
                     .call(this.force.drag);
+            
+            // Remove old data when updating.
+            this.nodes.exit().remove();
         },
 
         draw_links: function(links) {
             //
             // Add link data to D3 force simulation.
             //
+            
+            // Define link data and point to svg object id
             this.links = this.svg.selectAll(".graph_link")
-                .data(links, function(d){ return d.id; })
-                .enter().append("line")
+                    .data(links, function(d){ return d.id; })
+            
+            // Create line svg objects for links and draw
+            this.links.enter().append("line")
                     .attr("class", "graph_link")
                     .attr("id", function(d) {return d.id})
                     .attr("stroke", function(d){ return d.color; })
                     .attr("stroke-width", function(d){ return d.width; })
                     .attr("opacity", function(d){ return d.opacity; })
                     .attr("stroke-opacity", function(d) { return d.opacity; });
+            
+            // Remove any old data on update
+            this.links.exit().remove();
+                    
         },
         
         /* 
@@ -134,8 +155,6 @@ define([
                 .attr("dx", function(d) {return interpolateRadius(d.value)})
                 .attr("dy", ".35em")
                 .text(function(d) { return d.binary; });
-
-            this.force_on();
         },
 
         node_color: function() {
@@ -177,7 +196,8 @@ define([
                 })
             });
 
-            this.force.start();
+            this.force
+                .start();
         },
 
         /* 
@@ -186,7 +206,34 @@ define([
         ----------------------------------------------------------
         */
 
-
+        force_add_node: function(node){
+            //
+            // Add node to network and draw it.
+            //
+            
+            this.force_nodes.push(node);
+            this.force_update();
+            
+        },
+        
+        force_add_link: function(link){
+            //
+            // Add link to network and draw it.
+            //
+            
+            this.force_links.push(link);
+            this.force_update();
+        },
+        
+        force_update: function(){
+            // Restart the force
+            
+            this.draw_links(this.force_links);
+            this.draw_nodes(this.force_nodes);
+            this.force_on();
+            
+        },
+        
         /* 
         ----------------------------------------------------------
         Network Widgets

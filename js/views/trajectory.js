@@ -36,14 +36,13 @@ define([
             // links = [{"source": #, "target": #}, {"source": #, "target": #}, ...]
             
             // Get network links
-            var links = this.network_view.link_data.slice();
-            
+            //var links = this.network_view.link_data.slice();
+            var links = [];
             for (var property in this.drawn_traj){
                 // Need this to iterate through object
                 if (this.drawn_traj.hasOwnProperty(property)){
-                    
                     // Add a set of trajectory links to network linkss
-                    links.concat(this.drawn_traj[property])
+                    links = links.concat(this.drawn_traj[property])
                 }
             };
             return links
@@ -68,12 +67,12 @@ define([
             // and render this list through network draw_links method
             //
             var nodes = this.network_view.node_data;
+
             var links = this.link_array();
-            
-            this.network_view.start_force(nodes, links)
-            this.network_view.draw_links(links);
-            this.network_view.draw_nodes(nodes);
-            this.network_view.force_on();
+
+            for (var i=0; i < links.length; i++){
+                this.network_view.force_add_link(links[i]);                
+            };
         },
         
     });
