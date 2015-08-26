@@ -5,8 +5,9 @@ General network graph of nodes and edges.
 define([
     'jquery',
     'd3',
-    'backbone'
-], function($, d3, backbone) {
+    'backbone',
+    'underscore'
+], function($, d3, backbone, _) {
 
     // --------------------------------------
     // Network Model
@@ -20,6 +21,7 @@ define([
             "link_color": "#fff",  // color of trajectory link
             "link_width": 6,
             "drawn_traj": {},   // object to story drawn trajectories
+            "drawn_map" : {},   // mapping for drawn trajectories
         },
 
         initialize: function(data){
@@ -88,7 +90,7 @@ define([
             // Add trajectory to trajectory model.
             //
             
-            var drawn = this.get("drawn_traj");
+            var drawn = _.clone(this.get("drawn_traj")); // need to clone for backbone to catch change
             drawn[index] = this.get("trajectories")[index]
             this.set("drawn_traj", drawn);
         },
@@ -97,8 +99,7 @@ define([
             //
             // Remove trajectory to trajectory model.
             //
-            
-            var drawn = this.get("drawn_traj");
+            var drawn = _.clone(this.get("drawn_traj")); // need to clone for backbone to catch change            
             delete drawn[index];
             this.set("drawn_traj", drawn);
         },

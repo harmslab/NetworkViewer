@@ -1325,13 +1325,11 @@ requirejs([
 
     // Initializing all backbone views.
     this.network_modal = new NetworkModal();
-    
     this.network_view = new NetworkView( { "model" : this.network_model } );
     
     // Introduce trajectory logic
     this.trajectory_model = new TrajectoryModel( trajectory );
     this.trajectory_table = new TrajectoryTable( {"model" : this.trajectory_model });
-    
     this.trajectory_view = new TrajectoryView( { "model" : this.trajectory_model, "network_view" : this.network_view});
 
 });

@@ -41,15 +41,20 @@ define([
             
             // Start force simulation.
             this.start_force(this.node_data, this.link_data);
+            
+            //
+            this.init_force_nodes = this.force.nodes();
+            this.init_force_links = this.force.links();
+            
             this.draw_links(this.link_data);
             this.draw_nodes(this.node_data);
             this.node_shape(this.node_shape_data);
             this.node_text();
             this.node_color();
             this.force_on();
-            this.size_slider();
-            this.form();
-            this.update_data();
+            //this.size_slider();
+            //this.form();
+            //this.update_data();
         },
 
         /* 
@@ -69,9 +74,6 @@ define([
                 .linkDistance(this.model.get("link_distance"))
                 .size([this.width-300, this.height-10])
                 .start()
-            
-            this.force_nodes = this.force.nodes();
-            this.force_links = this.force.links();
         },
 
         draw_nodes: function(nodes) {
@@ -85,7 +87,8 @@ define([
             
             // Create an svg group object for node drawing and
             // enter the drawing
-            this.nodes.enter().append("g")
+            this.nodes.enter()
+                .append("g")
                     .attr("class", "graph_node")
                     .attr("id", function(d) {return "node_"+d.index})
                     .call(this.force.drag);
@@ -104,7 +107,8 @@ define([
                     .data(links, function(d){ return d.id; })
             
             // Create line svg objects for links and draw
-            this.links.enter().append("line")
+            this.links.enter()
+                .append("line")
                     .attr("class", "graph_link")
                     .attr("id", function(d) {return d.id})
                     .attr("stroke", function(d){ return d.color; })
@@ -206,14 +210,19 @@ define([
         ----------------------------------------------------------
         */
 
+        reset_force: function(){
+            
+            this.force_nodes = _.clone(this.init_force_nodes);
+            this.force_links = _.clone(this.init_force_links);
+            
+        },
+
         force_add_node: function(node){
             //
             // Add node to network and draw it.
             //
-            
             this.force_nodes.push(node);
             this.force_update();
-            
         },
         
         force_add_link: function(link){
@@ -223,11 +232,13 @@ define([
             
             this.force_links.push(link);
             this.force_update();
+            // Return index of added link (last element)
+            //return this.force_links.length - 1;
         },
         
         force_update: function(){
             // Restart the force
-            
+            console.log(this.force_links)
             this.draw_links(this.force_links);
             this.draw_nodes(this.force_nodes);
             this.force_on();
