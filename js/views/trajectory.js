@@ -7,7 +7,7 @@ define([
     'jqueryui',
     'd3',
     'backbone',
-], function($, $ui, d3, backbone) {
+], function($, ui, d3, backbone) {
 
     // --------------------------------------
     // Trajectory widget
@@ -20,13 +20,13 @@ define([
             //Initialize Trajectory View
             //
             // this.model needs to be set (points to TrajectoryModel object)
+            this.listenTo(this.model, 'change', this.render);
             
             this.network_view = data["network_view"];
             this.traj = this.model.get("trajectories");
             this.drawn_traj = this.model.get("drawn_traj");
-            // Hack logic to throw out.
-            this.draw_trajectories()
-            
+
+            // listen for the model to change
         },
         
         link_array: function(){
@@ -62,10 +62,12 @@ define([
             delete this.drawn_traj[traj_name]
         },
         
-        draw_trajectories: function(traj_name){
+        render: function(){
             // Add trajectory to drawn trajectories object
             // and render this list through network draw_links method
             //
+            console.log("DRAWN")
+            
             var nodes = this.network_view.node_data;
 
             var links = this.link_array();

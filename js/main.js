@@ -7,7 +7,7 @@ requirejs([
     'js/views/network',
     'js/views/modal',
     'js/views/trajectory',
-    'js/views/traj-table'
+    'js/views/trajectory-table'
 ], function($, d3, NetworkModel, TrajectoryModel, NetworkView, NetworkModal, TrajectoryView, TrajectoryTable) {
 
     // Data plotted in network
@@ -1328,11 +1328,10 @@ requirejs([
     
     this.network_view = new NetworkView( { "model" : this.network_model } );
     
-    // Introduce trajectories
+    // Introduce trajectory logic
     this.trajectory_model = new TrajectoryModel( trajectory );
-
-    this.trajectory_view = new TrajectoryView( { "model" : this.trajectory_model, "network_view": this.network_view});
+    this.trajectory_table = new TrajectoryTable( {"model" : this.trajectory_model });
     
-    //this.trajectory_table = new TrajectoryTable( {"model" : this.trajectory_model });
+    this.trajectory_view = new TrajectoryView( { "model" : this.trajectory_model, "network_view" : this.network_view});
 
 });

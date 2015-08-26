@@ -18,29 +18,9 @@
                 <!-- Title of application -->
                 <h1 class="col-md-8">NetworkViewer <small>Interactive Network Visualization</small></h1>
 
-                <!-- Drop-down menu -->
-                <div class="dropdown col-md-1" style="float: right; margin-left: 20px;">
-                  <ul class="nav nav-pills" role="tablist">
-                    <li role="presentation" class="dropdown">
-                      <button id="drop4" href="#" class="dropdown-toggle btn btn-default btn-lg" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        Data List
-                        <span class="caret"></span>
-                      </button>
-                      <ul id="menu1" class="dropdown-menu" aria-labeledby="drop4">
-                        <!-- The menu items are placed in javascript.-->
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-default btn-lg col-md-1" data-toggle="modal" data-target="#myModal" style="float: right;">
                   <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                </button>
-
-                <!-- -->
-                <button id="colorbutton" type="button" class="btn btn-default btn-lg col-md-1" style="float: right;">
-                  Color
                 </button>
 
             </div>
@@ -50,31 +30,6 @@
 
                 <!-- Left panel for trajectory analysis -->
                 <div class="col-md-3">
-
-                    <!-- Add search form -->
-                    <form class="form-inline row">
-
-                        <h5><strong>Indentifier</strong></h5>
-
-                        <div class="form-group">
-                            <label class="sr-only" for="inputNumber">Identifier</label>
-                            <input type="text" class="form-control" id="inputNumber" placeholder="Node number">
-                        </div>
-
-                        <button type="button" class="btn btn-default" id="gobutton">Go</button>
-                    </form>
-
-                    <!-- -->
-                    <div class="list row"></div>
-
-                    <!-- -->
-                    <p id="sliderText row">
-                      <label for="amount">Size:</label>
-                      <input type="text" id="amount" readonly style="border:0; font-weight:bold;">
-                    </p>
-
-                    <!-- Slider for nide side-->
-                    <div id="slider row"></div>
 
                     <!-- Init table for trajectory analysis. -->
                     <table class="table table-hover row">

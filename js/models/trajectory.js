@@ -17,9 +17,9 @@ define([
         // Initial attributes
         defaults:{
             "link_opacity": 1,     // opacity of a trajectory link
-            "link_color": "#999",  // color of trajectory link
+            "link_color": "#fff",  // color of trajectory link
             "link_width": 6,
-            //"drawn_traj": {},   // object to story drawn trajectories
+            "drawn_traj": {},   // object to story drawn trajectories
         },
 
         initialize: function(data){
@@ -36,7 +36,6 @@ define([
             // Set trajectories as property of model.
             this.set({
                 "trajectories": trajectories,
-                "drawn_traj": trajectories,
             });
 
         },
@@ -77,13 +76,32 @@ define([
             
             for(var i=0; i < data.length; i++) {
                 // Key to mapping is trajectory + index
-                var key = "trajectory" + String(i);
+                var key = i;
                 
                 mapping[key] = this.path_to_links(data[i].nodes)                
             }
             return mapping
         },
         
+        add_trajectory: function(index) {
+            //
+            // Add trajectory to trajectory model.
+            //
+            
+            var drawn = this.get("drawn_traj");
+            drawn[index] = this.get("trajectories")[index]
+            this.set("drawn_traj", drawn);
+        },
+        
+        rm_trajectory: function(index) {
+            //
+            // Remove trajectory to trajectory model.
+            //
+            
+            var drawn = this.get("drawn_traj");
+            delete drawn[index];
+            this.set("drawn_traj", drawn);
+        },
         
     });
 
