@@ -21,7 +21,6 @@ define([
             "link_color": "#fff",  // color of trajectory link
             "link_width": 6,
             "drawn_traj": {},   // object to story drawn trajectories
-            "drawn_map" : {},   // mapping for drawn trajectories
         },
 
         initialize: function(data){
@@ -91,6 +90,7 @@ define([
             //
             
             var drawn = _.clone(this.get("drawn_traj")); // need to clone for backbone to catch change
+            
             drawn[index] = this.get("trajectories")[index]
             this.set("drawn_traj", drawn);
         },
@@ -99,7 +99,8 @@ define([
             //
             // Remove trajectory to trajectory model.
             //
-            var drawn = _.clone(this.get("drawn_traj")); // need to clone for backbone to catch change            
+            var drawn = _.clone(this.get("drawn_traj")); // need to clone for backbone to catch change
+            
             delete drawn[index];
             this.set("drawn_traj", drawn);
         },

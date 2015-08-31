@@ -35,16 +35,16 @@ define([
             this.force = d3.layout.force()
 
             // Get model data
-            this.node_data = this.model.get("nodes");
-            this.link_data = this.model.get("links");
+            this.node_data = _.clone(this.model.get("nodes"));
+            this.link_data = _.clone(this.model.get("links"));
             this.node_shape_data = this.model.get("node_shape");
             
             // Start force simulation.
             this.start_force(this.node_data, this.link_data);
             
-            //
-            this.init_force_nodes = this.force.nodes();
-            this.init_force_links = this.force.links();
+            // Get nodes
+            this.force_nodes = this.force.nodes();
+            this.force_links = this.force.links();
             
             this.draw_links(this.link_data);
             this.draw_nodes(this.node_data);
@@ -210,39 +210,43 @@ define([
         ----------------------------------------------------------
         */
 
-        reset_force: function(){
-            
-            this.force_nodes = _.clone(this.init_force_nodes);
-            this.force_links = _.clone(this.init_force_links);
-            
-        },
-
         force_add_node: function(node){
             //
             // Add node to network and draw it.
             //
             this.force_nodes.push(node);
             this.force_update();
+            
         },
-        
+                
         force_add_link: function(link){
             //
             // Add link to network and draw it.
             //
-            
             this.force_links.push(link);
             this.force_update();
-            // Return index of added link (last element)
-            //return this.force_links.length - 1;
+        },
+        
+        force_rm_link: function(id) {
+            // Remove link from force links
+            
+            // Find link and remove it
+            for ( var i=0; i < this.force_links.length; i++ ) {
+                if ( this.force_links[i].id == id ){
+                    var index = i;
+                }
+            }
+            this.force_links.splice(index, 1);
+            this.force_update();
         },
         
         force_update: function(){
+            //
             // Restart the force
-            console.log(this.force_links)
+            //
             this.draw_links(this.force_links);
             this.draw_nodes(this.force_nodes);
-            this.force_on();
-            
+            this.force_on();  
         },
         
         /* 

@@ -40,8 +40,8 @@ define([
                 $(parent).append(menu);
                 
                 menu.click([this, e, menu], this.click_row);
-                //menu.mouseover([this, e, menu], this.hover_row);
-                //menu.mouseout([this, e, menu], this.out_row);
+                menu.mouseover([this, e, menu], this.hover_row);
+                menu.mouseout([this, e, menu], this.out_row);
             }
             
         },
@@ -93,7 +93,9 @@ define([
             var that = d.data[0]
             var index = d.data[1];
             var menu = d.data[2];
-
+            
+            // Add trajectory to model.
+            menu.off("click")
             that.model.add_trajectory(index);
             menu.click([that, index, menu], that.unclick_row);
         },
@@ -106,6 +108,8 @@ define([
             var index = d.data[1];
             var menu = d.data[2];
 
+            // Remove trajectory from model.
+            menu.off("click")
             that.model.rm_trajectory(index);
             menu.click([that, index, menu], that.click_row);
         },
