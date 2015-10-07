@@ -38,14 +38,14 @@ define([
             this.node_data = _.clone(this.model.get("nodes"));
             this.link_data = _.clone(this.model.get("links"));
             this.node_shape_data = this.model.get("node_shape");
-            
+
             // Start force simulation.
             this.start_force(this.node_data, this.link_data);
-            
+
             // Get nodes
             this.force_nodes = this.force.nodes();
             this.force_links = this.force.links();
-            
+
             this.draw_links(this.link_data);
             this.draw_nodes(this.node_data);
             this.node_shape(this.node_shape_data);
@@ -57,7 +57,7 @@ define([
             //this.update_data();
         },
 
-        /* 
+        /*
         ----------------------------------------------------------
         Network initializing
         ----------------------------------------------------------
@@ -80,19 +80,20 @@ define([
             //
             // Add node data to D3 force simulation.
             //
-            
+
             // Define the node data and link to svg object id
             this.nodes = this.svg.selectAll(".graph_node")
                 .data(nodes, function(d){ return d.id; });
-            
+
             // Create an svg group object for node drawing and
             // enter the drawing
+
             this.nodes.enter()
                 .append("g")
                     .attr("class", "graph_node")
                     .attr("id", function(d) {return "node_"+d.index})
                     .call(this.force.drag);
-            
+
             // Remove old data when updating.
             this.nodes.exit().remove();
         },
@@ -101,11 +102,11 @@ define([
             //
             // Add link data to D3 force simulation.
             //
-            
+
             // Define link data and point to svg object id
             this.links = this.svg.selectAll(".graph_link")
                     .data(links, function(d){ return d.id; })
-            
+
             // Create line svg objects for links and draw
             this.links.enter()
                 .append("line")
@@ -115,18 +116,18 @@ define([
                     .attr("stroke-width", function(d){ return d.width; })
                     .attr("opacity", function(d){ return d.opacity; })
                     .attr("stroke-opacity", function(d) { return d.opacity; });
-            
+
             // Remove any old data on update
             this.links.exit().remove();
-                    
+
         },
-        
-        /* 
+
+        /*
         ----------------------------------------------------------
         Setting node and SVG representations.
         ----------------------------------------------------------
         */
-        
+
         node_shape: function(shape) {
             //
             // Add shapes to each node in D3 force simulation.
@@ -139,19 +140,20 @@ define([
 
             var interpolateRadius = d3.interpolate(2, 13);
 
-            this.circles = this.nodes.append(shape)
+            var circles = this.nodes.append(shape)
                 .attr("class", "graph_circle")
                 .attr("id", function(d) {return "node-"+d.index})
                 .attr("node-index", function(d) {return d.index})
                 .attr("r", function(d){ return interpolateRadius(d.value) });
 
+            this.circles = circles;
         },
 
         node_text: function(){
             //
             //Add text to each node based on each node's "id".
             //
-            
+
             var interpolateRadius = d3.interpolate(2, 13);
 
             this.labels = this.nodes.append("text")
@@ -181,11 +183,11 @@ define([
 
         force_on: function() {
             //
-            // How to handle each tick in a force simulation. 
+            // How to handle each tick in a force simulation.
             // Force object updates the svg representation.
             //
             var scope = this;
-            
+
             this.force.on("tick", function () {
 
                 scope.links
@@ -204,7 +206,7 @@ define([
                 .start();
         },
 
-        /* 
+        /*
         ----------------------------------------------------------
         Update node a link repesentation SVG representations.
         ----------------------------------------------------------
@@ -216,9 +218,9 @@ define([
             //
             this.force_nodes.push(node);
             this.force_update();
-            
+
         },
-                
+
         force_add_link: function(link){
             //
             // Add link to network and draw it.
@@ -226,10 +228,10 @@ define([
             this.force_links.push(link);
             this.force_update();
         },
-        
+
         force_rm_link: function(id) {
             // Remove link from force links
-            
+
             // Find link and remove it
             for ( var i=0; i < this.force_links.length; i++ ) {
                 if ( this.force_links[i].id == id ){
@@ -239,17 +241,17 @@ define([
             this.force_links.splice(index, 1);
             this.force_update();
         },
-        
+
         force_update: function(){
             //
             // Restart the force
             //
             this.draw_links(this.force_links);
             this.draw_nodes(this.force_nodes);
-            this.force_on();  
+            this.force_on();
         },
-        
-        /* 
+
+        /*
         ----------------------------------------------------------
         Network Widgets
         ----------------------------------------------------------
