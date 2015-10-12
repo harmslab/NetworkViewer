@@ -2,30 +2,52 @@
 <html>
     <head>
         <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="css/strict.css">
         <link rel="stylesheet" type="text/css" href="css/network.css">
+
         <script data-main="js/app" src="lib/require/require.js"></script>
+
     </head>
     <body>
-        <div class="container" id="main_page">
-            <div id="cool"></div>
-            
-            <!-- Page header for the webpage -->
-            <div class="page-header container-fluid">
-                <h1>NetworkViewer <small>Interactive Network Visualization</small>
+        <div class="network-viewer container" id="main_page">
 
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal" style="float: right;">
-                      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </button>
-                </h1>
+            <!-- Page header for the webpage -->
+            <div class="row page-header">
+
+                <!-- Title of application -->
+                <h1 class="col-md-8">NetworkViewer <small>Interactive Network Visualization</small></h1>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-default btn-lg col-md-1" data-toggle="modal" data-target="#myModal" style="margin-top: 20px; float: right;">
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                </button>
+
             </div>
-            
-            <!-- The choice of application is displayed here. -->
-            <div class="container-fluid" id="app_container">
-            
-                <!-- Main svg area -->
-                <div id="network_viewer"></div>
+
+            <!-- Main Application window -->
+            <div class="row" id="app_container">
+
+                <!-- Left panel for trajectory analysis -->
+                <div class="col-md-3">
+
+                    <!-- Init table for trajectory analysis. -->
+                    <table class="table table-hover row">
+                        <tbody id = "tablebody">
+                            <thead>
+                                <th colspan="1">Trajectory #</th>
+                                <th colspan="1">Score</th>
+                            </thead>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- Viewer panel -->
+                <div class="col-md-9" id="network_viewer"></div>
+
             </div>
+
         </div>
     </body>
 </html>
